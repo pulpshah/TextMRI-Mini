@@ -1,18 +1,24 @@
 import React from 'react'
 import styles from '@/css/index.module.css'
 import Image from 'next/image'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 const OverviewComponent = () => {
   return (
 	<div className='flex overview w-full h-fit flex-row items-center mx-1'>
 		<div className="title flex-col justify-center items-center px-[20px] py-[2px] w-full h-fit bg-clip-content">
 			<h1 className={styles.primaryTitle}>Presidental Debate</h1>
 			<div className="selector w-full gap-[10px] flex flex-row">
-				<div className="transcript px-[15px] py-[4px] hover:scale-105 transition-transform duration-200 bg-[#CA60ED] bg-opacity-50 rounded-[8px]">
-					<h1 className='text-[25px] w-full'>Transcript</h1>
-				</div>
-				<div className="highlights px-[15px] py-[4px] bg-none bg-opacity-50 rounded-[8px]">
-					<h1 className='text-[25px]'>Highlights</h1>
-				</div>
+
+				<Tabs defaultValue="account" className="w-[400px]">
+				<TabsList>
+					<TabsTrigger value="account">Transcript</TabsTrigger>
+					<TabsTrigger value="password">Highlights</TabsTrigger>
+				</TabsList>
+				<TabsContent value="account"></TabsContent>
+				<TabsContent value="password"></TabsContent>
+				</Tabs>
+
 			</div>
 		</div>
 
