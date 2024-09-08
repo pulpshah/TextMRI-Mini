@@ -5,13 +5,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const OverviewComponent = () => {
   return (
-	<div className='flex overview w-full h-fit flex-row items-center mx-1'>
-		<div className="title flex-col justify-center items-center px-[20px] py-[2px] w-full h-fit bg-clip-content">
+	<div className='flex overview w-full h-fit flex-row items-center mx-1'
+	>
+		<div className="title flex-col justify-center items-center px-[20px] py-[2px] w-full h-fit bg-clip-content ">
 			<h1 className={styles.primaryTitle}>Presidental Debate</h1>
 			<div className="selector w-full gap-[10px] flex flex-row">
 
 				<Tabs defaultValue="account" className="w-[400px]">
-				<TabsList>
+				<TabsList style={{ boxShadow: '0px 0px 22.8px 9px rgba(0, 0, 0, 0.37)', }}>
 					<TabsTrigger value="account">Transcript</TabsTrigger>
 					<TabsTrigger value="password">Highlights</TabsTrigger>
 				</TabsList>
@@ -22,7 +23,7 @@ const OverviewComponent = () => {
 			</div>
 		</div>
 
-		<div className="speakers gap-[10px] px-[20px] bg-[#131214] py-[10px] border border-[#2F3133] rounded-[8px] items-center justify-between">
+		<div style={{ boxShadow: '0px 0px 22.8px 9px rgba(0, 0, 0, 0.37)', }} className="speakers gap-[10px] px-[20px] bg-[#131214] py-[10px] border border-[#2F3133] rounded-[8px] items-center justify-between">
 			<div className="flex flex-col padding h-full gap-[5px]">
 				<div className="trump flex items-center flex-row w-full h-full gap-[20px]">
 					<div className="speaker flex flex-row items-center p-[10px] justify-center gap-[10px]">
