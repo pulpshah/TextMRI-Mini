@@ -11,6 +11,11 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary:"#131214",
+        secondary:"#2F3133",
+        republican:"#AC2C2C",
+        democrat:"#2C4AAC",
+        brand:"#CA60ED",
       },
     },
   },
