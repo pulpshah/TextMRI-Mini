@@ -111,7 +111,7 @@ const OverviewComponent = () => {
 					<div className="flex flex-none flex-row items-center justify-center affiliation py-[8px] text-[15px] gap-[10px] px-[8px] w-[90px] h-full bg-secondary rounded-[2px] hover:scale-105 transition-transform duration-200">
 							<div className="talk-time flex flex-col items-center gap-[1px] ">
 								<div className="whitespace-nowrap font-bold h-[20px] w-full px-15 gap-[10px] text-center
-								">7</div>
+								">70</div>
 								<div className="whitespace-nowrap flex flex-row justify-center items-center gap-1">
 									<div className="">Score</div>
 									</div>
