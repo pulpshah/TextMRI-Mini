@@ -1,9 +1,9 @@
 import React from 'react'
 
-const transcriptModule = () => {
+const TranscriptModule = () => {
   return (
-    <div>transcriptModule</div>
+    <div>TranscriptModule</div>
   )
 }
 
-export default transcriptModule
+export default TranscriptModule
