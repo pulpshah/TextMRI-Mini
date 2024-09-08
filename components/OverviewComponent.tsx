@@ -19,7 +19,6 @@ const OverviewComponent = () => {
 				<TabsContent value="account"></TabsContent>
 				<TabsContent value="password"></TabsContent>
 				</Tabs>
-
 			</div>
 		</div>
 
