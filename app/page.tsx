@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch"
 export default function Component() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
   const [currentTurn, setCurrentTurn] = useState(1)
-  const [activePopup, setActivePopup] = useState(null)
+  const [activePopup, setActivePopup] = useState<string | null>(null);
   const [currentSegment, setCurrentSegment] = useState('Introduction')
   const [speakerPurpose, setSpeakerPurpose] = useState('To inform')
   const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
