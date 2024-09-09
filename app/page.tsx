@@ -35,14 +35,16 @@ export default function Component() {
     }
   }, [currentTurn])
 
-  const handleTurnChange = (newTurn) => {
+  const handleTurnChange = (newTurn: number) => {
     setCurrentTurn(Math.max(1, Math.min(newTurn, transcriptData.length)))
   }
+  
 
-  const handlePopupOpen = (popupId) => {
-    setActivePopup(popupId)
-    document.body.style.overflow = 'hidden'
-  }
+  const handlePopupOpen = (popupId: string) => {
+    setActivePopup(popupId);
+    document.body.style.overflow = 'hidden';
+  };
+  
 
   const handlePopupClose = () => {
     setActivePopup(null)
@@ -198,7 +200,7 @@ export default function Component() {
             <div className="text-right">
               <h3 className="font-semibold">Kamala Harris</h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
-                <span className="bg-blue-600 px-2 py-1 py-1 mt-1 rounded-full">Democrat</span>
+                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
                 <span>0:45 Talk Time</span>
                 <span className="">•</span>
                 <span>2 Turns</span>
