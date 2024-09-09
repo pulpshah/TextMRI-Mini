@@ -19,7 +19,7 @@ const TranscriptSection: React.FC<TranscriptProps> = ({ transcriptData, currentT
             className={`p-3 bg-[#3a3a3a] rounded-md transition-all duration-300 cursor-pointer ${
               currentTurn === item.turn ? 'border-2 border-[#CA60ED]' : ''
             }`}
-            onClick={() => handleTurnChange(item.turn)}
+            onClick={() => handleTurnChange(item.turn)} // Allow clicking on the turn to switch turns
           >
             <div className="flex items-center space-x-2 mb-2">
               <div className="w-8 h-8 bg-[#4a4a4a] rounded-full flex items-center justify-center">
