@@ -1,8 +1,10 @@
+/*Hasib Componentize everything without breaking. It will be easier to data fetch */
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Maximize2, Volume2, Radio } from 'lucide-react'
 import Image from 'next/image'
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 
@@ -10,18 +12,18 @@ export default function Component() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
   const [currentTurn, setCurrentTurn] = useState(1)
   const [activePopup, setActivePopup] = useState(null)
-  const [currentSegment, setCurrentSegment] = useState(1)
+  const [currentSegment, setCurrentSegment] = useState('Introduction')
   const [speakerPurpose, setSpeakerPurpose] = useState('To inform')
   const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
-  const transcriptRef = useRef(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null);
 
-  const transcriptData = [
-    { turn: 1, speaker: 'Muir', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
+  const transcriptData = [ /* This is the format for the transcript Hasib */
+    { turn: 1, speaker: 'Hasib', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
     { turn: 2, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
-    { turn: 3, speaker: 'Clinton', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
-    { turn: 4, speaker: 'Muir', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
+    { turn: 3, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
+    { turn: 4, speaker: 'Hasib', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
     { turn: 5, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
-    { turn: 6, speaker: 'Clinton', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
+    { turn: 6, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
   ]
 
   useEffect(() => {
@@ -51,13 +53,20 @@ export default function Component() {
     <div className="flex flex-col h-screen text-white bg-[#131214] max-xl:hidden">
       <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
         <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold">Presidential Debate 9/10/24</h1>
+          <div className='flex gap-5'>
+            <h1 className="text-4xl font-bold">Presidential Debate</h1>
+
+            <Avatar>
+          <AvatarImage src="/profiles/hasib.jpg" />
+          <AvatarFallback>Profile</AvatarFallback>
+        </Avatar>
           </div>
 
-          {/* Center Logo */}
-          <div className="flex justify-center items-center">
+          <div className="flex items-center">
+            <div className="absolute left-1/2">
+
             <Image src="/profiles/logo1.png" alt="Logo" width={158} height={48} />
+            </div>
           </div>
 
           <div className="text-right space-y-2">
@@ -114,7 +123,7 @@ export default function Component() {
                         className={`p-3 bg-[#3a3a3a] rounded-md transition-all duration-300 cursor-pointer ${
                           currentTurn === item.turn ? 'border-2 border-[#CA60ED]' : ''
                         }`}
-                        onClick={() => handleTurnChange(item.turn)}  // Allow clicking on the turn to switch turns
+                        onClick={() => handleTurnChange(item.turn)}
                       >
                         <div className="flex items-center space-x-2 mb-2">
                           <div className="w-8 h-8 bg-[#4a4a4a] rounded-full flex items-center justify-center">
@@ -177,9 +186,11 @@ export default function Component() {
               <h3 className="font-semibold">Donald J. Trump</h3>
               <div className="flex items-center space-x-2 text-sm">
                 <span className="bg-red-600 px-2 py-1 mt-1 rounded-full">Republican</span>
-                <span>0:25 Talk Time</span>
-                <span>1 Turns</span>
-                <span>49 Score</span>
+                <span>0:25 Talk Time </span>
+                <span className="">•</span>
+                <span>1 Turns </span>
+                <span className="">•</span>
+                <span>49 Score </span>
               </div>
             </div>
           </div>
@@ -187,9 +198,11 @@ export default function Component() {
             <div className="text-right">
               <h3 className="font-semibold">Kamala Harris</h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
-                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
+                <span className="bg-blue-600 px-2 py-1 py-1 mt-1 rounded-full">Democrat</span>
                 <span>0:45 Talk Time</span>
+                <span className="">•</span>
                 <span>2 Turns</span>
+                <span className="">•</span>
                 <span>70 Score</span>
               </div>
             </div>
