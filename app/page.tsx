@@ -55,6 +55,14 @@ export default function Component() {
     return (formatTime(seconds));
   };
 
+  const getTime = () => {
+    const seconds = dataObj
+      .slice(0, currentTurn)
+      .filter(turn => turn.startTime)
+      .reduce((total, turn) => total + (turn.endTime - turn.startTime), 0);
+    return (formatTime(seconds));
+  };
+
   const transcriptData = dataObj.map((turn, index) => ({
     turn: index + 1,
     speaker: turn.speaker,
@@ -245,7 +253,7 @@ export default function Component() {
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center text-[30px] space-x-4">
-            <span>{getTrumpTime()} </span>
+            <span>{getTime()} </span>
           </div>
           <div className="text-right text-[13px] space-y-2">
             <p>Segment: {currentSegment}</p>
