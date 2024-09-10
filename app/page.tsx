@@ -165,11 +165,11 @@ export default function Component() {
               <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
                 
               </div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
-                {getTrumpScore()} • {getKamalaScore()}
-              </div>
               <div className="text-xl mt-2">
                 Score
+              </div>
+              <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
+                {getTrumpScore()} • {getKamalaScore()}
               </div>
             </div>
           </div>
