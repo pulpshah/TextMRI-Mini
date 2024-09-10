@@ -301,8 +301,8 @@ export default function Component() {
           </div>
           <div className="text-right text-[13px] space-y-2">
             <p>Segment: {currentSegment}</p>
-            <p>Speaker Purpose: {speakerPurpose}</p>
-            <p>Target Audience: {targetAudience}</p>
+            <p>Purpose: {speakerPurpose}</p>
+            <p>Target: {targetAudience}</p>
           </div>
         </div>
       </footer>
