@@ -1,5 +1,5 @@
-/*Hasib Componentize everything without breaking. It will be easier to data fetch */
 'use client'
+
 import { useState, useRef, useEffect } from 'react'
 import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Maximize2, Volume2, Radio } from 'lucide-react'
 import Image from 'next/image'
@@ -17,7 +17,7 @@ export default function Component() {
   const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
   const transcriptRef = useRef<HTMLDivElement | null>(null);
 
-  const transcriptData = [ /* This is the format for the transcript Hasib */
+  const transcriptData = [
     { turn: 1, speaker: 'Hasib', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
     { turn: 2, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
     { turn: 3, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
@@ -25,6 +25,17 @@ export default function Component() {
     { turn: 5, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
     { turn: 6, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
   ]
+
+  const votableQuestions = [
+    "Because you'd be in jail.",
+    "We're going to make America great again.",
+    "I have a plan for that.",
+    "It's a disaster, folks.",
+    "We need to build bridges, not walls.",
+    "I'm not a politician, I'm a businessman."
+  ]
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
   useEffect(() => {
     if (transcriptRef.current) {
@@ -35,16 +46,22 @@ export default function Component() {
     }
   }, [currentTurn])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuestionIndex((prevIndex) => (prevIndex + 1) % votableQuestions.length)
+    }, 10000) // Change question every 10 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
   const handleTurnChange = (newTurn: number) => {
     setCurrentTurn(Math.max(1, Math.min(newTurn, transcriptData.length)))
   }
-  
 
   const handlePopupOpen = (popupId: string) => {
     setActivePopup(popupId);
     document.body.style.overflow = 'hidden';
   };
-  
 
   const handlePopupClose = () => {
     setActivePopup(null)
@@ -55,26 +72,37 @@ export default function Component() {
     <div className="flex flex-col h-screen text-white bg-[#131214] max-xl:hidden">
       <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
         <div className="flex justify-between items-center">
-          <div className='flex gap-5'>
-            <h1 className="text-4xl font-bold">Presidential Debate</h1>
-
-            <Avatar>
-          <AvatarImage src="/profiles/hasib.jpg" />
-          <AvatarFallback>Profile</AvatarFallback>
-        </Avatar>
-          </div>
-
-          <div className="flex items-center">
-            <div className="absolute left-1/2">
-
-            <Image src="/profiles/logo1.png" alt="Logo" width={158} height={48} />
+          <div className="flex items-center space-x-4">
+            <Image src="/profiles/trump.png" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
+            <div>
+              <h3 className="font-semibold">Donald J. Trump</h3>
+              <div className="flex items-center space-x-2 text-sm">
+                <span className="bg-red-600 px-2 py-1 rounded-full">Republican</span>
+                <span>0:25 Talk Time </span>
+                <span>• 1 Turns </span>
+              </div>
             </div>
           </div>
 
-          <div className="text-right space-y-2">
-            <p>Segment: {currentSegment}</p>
-            <p>Speaker Purpose: {speakerPurpose}</p>
-            <p>Target Audience: {targetAudience}</p>
+          <div className="flex items-center">
+            <div className="text-center">
+              <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
+                49 - 70
+              </div>
+              <div className="text-xl mt-2">Score</div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div className="text-right">
+              <h3 className="font-semibold">Kamala Harris</h3>
+              <div className="flex items-center space-x-2 text-sm justify-end">
+                <span className="bg-blue-600 px-2 py-1 rounded-full">Democrat</span>
+                <span>0:45 Talk Time</span>
+                <span>• 2 Turns</span>
+              </div>
+            </div>
+            <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />
           </div>
         </div>
       </header>
@@ -141,7 +169,7 @@ export default function Component() {
                 </div>
               </div>
               <div className="h-auto p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
-                <h2 className="text-xl font-semibold mb-4 text-center">"Because you'd be in jail."</h2>
+                <h2 className="text-xl font-semibold mb-4 text-center">"{votableQuestions[currentQuestionIndex]}"</h2>
                 <p className="mb-4 text-gray-400 text-center">How would you assess this statement—valid, invalid, or would you prefer to abstain from making a judgment?</p>
                 <div className="flex space-x-2 mb-4 justify-center">
                   <button className="px-4 py-2 bg-[#CA60ED] rounded-md hover:bg-purple-700 transition-colors">Invalid</button>
@@ -183,32 +211,16 @@ export default function Component() {
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <Image src="/profiles/trump.png" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
-            <div>
-              <h3 className="font-semibold">Donald J. Trump</h3>
-              <div className="flex items-center space-x-2 text-sm">
-                <span className="bg-red-600 px-2 py-1 mt-1 rounded-full">Republican</span>
-                <span>0:25 Talk Time </span>
-                <span className="">•</span>
-                <span>1 Turns </span>
-                <span className="">•</span>
-                <span>49 Score </span>
-              </div>
-            </div>
+            <Avatar>
+              <AvatarImage src="/profiles/hasib.jpg" />
+              <AvatarFallback>Profile</AvatarFallback>
+            </Avatar>
+            <h1 className="text-2xl font-bold">Presidential Debate</h1>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-right">
-              <h3 className="font-semibold">Kamala Harris</h3>
-              <div className="flex items-center space-x-2 text-sm justify-end">
-                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
-                <span>0:45 Talk Time</span>
-                <span className="">•</span>
-                <span>2 Turns</span>
-                <span className="">•</span>
-                <span>70 Score</span>
-              </div>
-            </div>
-            <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />
+          <div className="text-right space-y-2">
+            <p>Segment: {currentSegment}</p>
+            <p>Speaker Purpose: {speakerPurpose}</p>
+            <p>Target Audience: {targetAudience}</p>
           </div>
         </div>
       </footer>
