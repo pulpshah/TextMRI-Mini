@@ -151,7 +151,7 @@ export default function Component() {
             <div>
               <h3 className="font-semibold flex items-center">
                 Donald J. Trump
-                <Image src="/profiles/republicanicon.svg" alt="Republican Party" width={18} height={16} className="ml-2" />
+                <Image src="/profiles/republicanIcon.svg" alt="Republican Party" width={18} height={16} className="ml-2" />
               </h3>
               <div className="flex items-center space-x-2 text-sm">
                 <span>Talk Time: {getTrumpTime()} </span>
@@ -177,7 +177,7 @@ export default function Component() {
           <div className="flex items-center space-x-4">
             <div className="text-right">
               <h3 className="font-semibold flex items-center justify-end">
-                <Image src="/profiles/democraticon.svg" alt="Democratic Party" width={20} height={16} className="mr-2" />
+                <Image src="/profiles/democratIcon.svg" alt="Democratic Party" width={20} height={16} className="mr-2" />
                 Kamala Harris
               </h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
