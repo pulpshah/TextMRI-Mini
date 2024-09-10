@@ -165,8 +165,8 @@ export default function Component() {
               <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
                 
               </div>
-              <div className="text-xl mt-2">
-                Score
+              <div className="text-xl w-16 mx-auto mt-2 mb-2">
+                <img src="profiles/logo.svg" alt="" />
               </div>
               <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
                 {getTrumpScore()} • {getKamalaScore()}
