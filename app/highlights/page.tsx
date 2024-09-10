@@ -34,17 +34,17 @@ const HighlightRow: React.FC<HighlightRowProps> = ({ title, items }) => {
     }
   }
 
-  const onMouseDown = (e: React.MouseEvent) => {
+  const onMouseDown = (e: MouseEvent) => {
     setIsDragging(true)
     setStartX(e.pageX - scrollContainerRef.current!.offsetLeft)
     setScrollLeft(scrollContainerRef.current!.scrollLeft)
   }
 
-  const onMouseUp = () => {
+  const onMouseUp = (e: MouseEvent) => {
     setIsDragging(false)
   }
 
-  const onMouseMove = (e: React.MouseEvent) => {
+  const onMouseMove = (e: MouseEvent) => {
     if (!isDragging) return
     e.preventDefault()
     const x = e.pageX - scrollContainerRef.current!.offsetLeft
