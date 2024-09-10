@@ -60,6 +60,15 @@ export default function Component() {
       .reduce((total, turn) => total + (turn.endTime - turn.startTime), 0);
     return formatTime(seconds);
   };
+
+  const getSpeakerScore = (speaker: string) => {
+    return dataObj.slice(0, currentTurn + 1)
+      .filter(turn => turn.speaker === speaker)
+      .reduce((turn) => (turn.score || 0), 0);  // Summing up the scores for the speaker
+  };
+  
+  // Usage for Kamala Harris
+  const getKamalaScore = () => getSpeakerScore("Kamala Harris");
   
 
   const transcriptData = dataObj.map((turn, index) => ({
@@ -131,7 +140,7 @@ export default function Component() {
               <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
                 
               </div>
-              <div className="text-xl mt-2">Score</div>
+              <div className="text-xl mt-2">{getKamalaScore()}</div>
             </div>
           </div>
 
