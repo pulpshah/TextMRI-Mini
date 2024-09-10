@@ -62,13 +62,17 @@ export default function Component() {
   };
 
   const getSpeakerScore = (speaker: string) => {
-    return dataObj.slice(0, currentTurn + 1)
-      .filter(turn => turn.speaker === speaker)
-      .reduce((turn) => (turn.score || 0), 0);  // Summing up the scores for the speaker
+    const turns = dataObj.slice(0, currentTurn + 1)
+      .filter(turn => turn.speaker === speaker);
+      
+    // Return the score of the last turn if it exists
+    return turns.length > 0 ? turns[turns.length - 1].score : 0;
   };
   
   // Usage for Kamala Harris
   const getKamalaScore = () => getSpeakerScore("Kamala Harris");
+  const getTrumpScore = () => getSpeakerScore("Donald Trump");
+  
   
 
   const transcriptData = dataObj.map((turn, index) => ({
@@ -140,7 +144,12 @@ export default function Component() {
               <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
                 
               </div>
-              <div className="text-xl mt-2">{getKamalaScore()}</div>
+              <div className="text-3xl mt-2 ">
+                {getTrumpScore()} • {getKamalaScore()}
+              </div>
+              <div className="text-xl mt-2">
+                Score
+              </div>
             </div>
           </div>
 
@@ -148,7 +157,6 @@ export default function Component() {
             <div className="text-right">
               <h3 className="font-semibold">Kamala Harris</h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
-                
                 <span>Talk Time: {getKamalaTime()} </span>
                 <span>• Turns: {getKamalaTurn()}</span>
                 <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
