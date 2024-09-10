@@ -6,14 +6,26 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 
-const HighlightRow = ({ title, items }) => {
+type HighlightItem = {
+    title: string;
+    icon: JSX.Element;
+    description: string;
+    image: string;
+  };
+  
+type HighlightRowProps = {
+  title: string;
+  items: HighlightItem[];
+};
+
+const HighlightRow: React.FC<HighlightRowProps> = ({ title, items }) => {
   const [scrollPosition, setScrollPosition] = useState(0)
-  const scrollContainerRef = useRef(null)
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
 
-  const scroll = (direction) => {
+  const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current
     if (container) {
       const scrollAmount = direction === 'left' ? -300 : 300
@@ -22,23 +34,23 @@ const HighlightRow = ({ title, items }) => {
     }
   }
 
-  const onMouseDown = (e) => {
+  const onMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true)
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft)
-    setScrollLeft(scrollContainerRef.current.scrollLeft)
+    setStartX(e.pageX - scrollContainerRef.current!.offsetLeft)
+    setScrollLeft(scrollContainerRef.current!.scrollLeft)
   }
 
   const onMouseUp = () => {
     setIsDragging(false)
   }
 
-  const onMouseMove = (e) => {
+  const onMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return
     e.preventDefault()
-    const x = e.pageX - scrollContainerRef.current.offsetLeft
+    const x = e.pageX - scrollContainerRef.current!.offsetLeft
     const walk = (x - startX) * 2
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk
-    setScrollPosition(scrollContainerRef.current.scrollLeft)
+    scrollContainerRef.current!.scrollLeft = scrollLeft - walk
+    setScrollPosition(scrollContainerRef.current!.scrollLeft)
   }
 
   useEffect(() => {
