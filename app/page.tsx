@@ -97,7 +97,7 @@ export default function Component() {
             <div className="text-right">
               <h3 className="font-semibold">Kamala Harris</h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
-                <span className="bg-blue-600 px-2 py-1 rounded-full">Democrat</span>
+                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
                 <span>0:45 Talk Time</span>
                 <span>• 2 Turns</span>
               </div>
@@ -106,7 +106,6 @@ export default function Component() {
           </div>
         </div>
       </header>
-
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 p-4 overflow-hidden">
           <div className="flex h-full space-x-4">
