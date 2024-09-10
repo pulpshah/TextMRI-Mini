@@ -1,151 +1,275 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Maximize2, Volume2, Radio } from 'lucide-react'
 import Image from 'next/image'
 
-const HighlightRow = ({ title, items }) => {
-  const [scrollPosition, setScrollPosition] = useState(0)
-  const scrollContainerRef = useRef(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [startX, setStartX] = useState(0)
-  const [scrollLeft, setScrollLeft] = useState(0)
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 
-  const scroll = (direction) => {
-    const container = scrollContainerRef.current
-    if (container) {
-      const scrollAmount = direction === 'left' ? -300 : 300
-      container.scrollBy({ left: scrollAmount, behavior: 'smooth' })
-      setScrollPosition(container.scrollLeft + scrollAmount)
-    }
-  }
+export default function Component() {
+  const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
+  const [currentTurn, setCurrentTurn] = useState(1)
+  const [activePopup, setActivePopup] = useState<string | null>(null);
+  const [currentSegment, setCurrentSegment] = useState('Introduction')
+  const [speakerPurpose, setSpeakerPurpose] = useState('To inform')
+  const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
+  const transcriptRef = useRef<HTMLDivElement | null>(null);
 
-  const onMouseDown = (e) => {
-    setIsDragging(true)
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft)
-    setScrollLeft(scrollContainerRef.current.scrollLeft)
-  }
+  const transcriptData = [
+    { turn: 1, speaker: 'Hasib', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
+    { turn: 2, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
+    { turn: 3, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
+    { turn: 4, speaker: 'Hasib', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
+    { turn: 5, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
+    { turn: 6, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
+  ]
 
-  const onMouseUp = () => {
-    setIsDragging(false)
-  }
+  const votableQuestions = [
+    "Because you'd be in jail.",
+    "We're going to make America great again.",
+    "I have a plan for that.",
+    "It's a disaster, folks.",
+    "We need to build bridges, not walls.",
+    "I'm not a politician, I'm a businessman."
+  ]
 
-  const onMouseMove = (e) => {
-    if (!isDragging) return
-    e.preventDefault()
-    const x = e.pageX - scrollContainerRef.current.offsetLeft
-    const walk = (x - startX) * 2
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk
-    setScrollPosition(scrollContainerRef.current.scrollLeft)
-  }
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
   useEffect(() => {
-    const container = scrollContainerRef.current
-    if (container) {
-      container.addEventListener('mousedown', onMouseDown)
-      container.addEventListener('mouseup', onMouseUp)
-      container.addEventListener('mousemove', onMouseMove)
-      container.addEventListener('mouseleave', onMouseUp)
-
-      return () => {
-        container.removeEventListener('mousedown', onMouseDown)
-        container.removeEventListener('mouseup', onMouseUp)
-        container.removeEventListener('mousemove', onMouseMove)
-        container.removeEventListener('mouseleave', onMouseUp)
+    if (transcriptRef.current) {
+      const turnElement = transcriptRef.current.querySelector(`[data-turn="${currentTurn}"]`)
+      if (turnElement) {
+        turnElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
       }
     }
-  }, [isDragging, startX, scrollLeft])
+  }, [currentTurn])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuestionIndex((prevIndex) => (prevIndex + 1) % votableQuestions.length)
+    }, 10000) // Change question every 10 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const handleTurnChange = (newTurn: number) => {
+    setCurrentTurn(Math.max(1, Math.min(newTurn, transcriptData.length)))
+  }
+
+  const handlePopupOpen = (popupId: string) => {
+    setActivePopup(popupId);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handlePopupClose = () => {
+    setActivePopup(null)
+    document.body.style.overflow = 'auto'
+  }
 
   return (
-    <div className="mb-12">
-      <h2 className="text-xl font-semibold mb-4 px-4">{title}</h2>
-      <div className="relative">
-        <button
-          onClick={() => scroll('left')}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-full z-10 hover:bg-[#4a4a4a] transition-all duration-300"
-          style={{ display: scrollPosition > 0 ? 'block' : 'none' }}
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <div
-          ref={scrollContainerRef}
-          className="flex overflow-x-auto space-x-4 py-4 px-4 no-scrollbar"
-          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-        >
-          {items.map((item, index) => (
-            <div
-              key={index}
-              className="flex-none w-72 bg-[#131214] border border-[#2F3133] rounded-lg p-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] hover:bg-[#1a1a1c] transition-all duration-300 transform hover:scale-105 cursor-pointer relative"
-            >
-              <div className="absolute inset-x-0 top-0 h-1 bg-[#CA60ED] rounded-t-lg"></div>
-              <div className="flex items-center space-x-3 mb-2">
-                {item.icon}
-                <h3 className="font-semibold">{item.title}</h3>
+    <div className="flex flex-col h-screen text-white bg-[#131214] max-xl:hidden">
+      <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <Image src="/profiles/trump.png" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
+            <div>
+              <h3 className="font-semibold">Donald J. Trump</h3>
+              <div className="flex items-center space-x-2 text-sm">
+                <span className="bg-red-600 px-2 py-1 rounded-full">Republican</span>
+                <span>0:25 Talk Time </span>
+                <span>• 1 Turns </span>
               </div>
-              <div className="mb-2 overflow-hidden rounded-md">
-                <Image 
-                  src={item.image || '/placeholder.svg?height=157&width=280'} 
-                  alt={item.title} 
-                  width={280} 
-                  height={157} 
-                  className="object-cover w-full h-auto"
-                />
-              </div>
-              <p className="text-sm text-gray-400">{item.description}</p>
             </div>
-          ))}
+          </div>
+
+          <div className="flex items-center">
+            <div className="text-center">
+              <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
+                49 - 70
+              </div>
+              <div className="text-xl mt-2">Score</div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div className="text-right">
+              <h3 className="font-semibold">Kamala Harris</h3>
+              <div className="flex items-center space-x-2 text-sm justify-end">
+                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
+                <span>0:45 Talk Time</span>
+                <span>• 2 Turns</span>
+              </div>
+            </div>
+            <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />
+          </div>
         </div>
+      </header>
+      <div className="flex flex-1 overflow-hidden">
+        <main className="flex-1 p-4 overflow-hidden">
+          <div className="flex h-full space-x-4">
+            <div className="w-1/2 flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('graph1')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
+                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
+              </div>
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('annotation')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
+                <p className="text-gray-300">Explain Stuff</p>
+              </div>
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('graph2')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
+                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
+              </div>
+              
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('annotation')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
+                <p className="text-gray-300">Explain Stuff</p>
+              </div>
+            </div>
+            <div className="w-1/2 flex flex-col space-y-4">
+              <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden">
+                <h2 className="text-xl font-semibold mb-2">Transcript</h2>
+                <div ref={transcriptRef} className="h-[calc(100%-2rem)] overflow-y-auto pr-2 custom-scrollbar">
+                  <div className="space-y-4">
+                    {transcriptData.map((item, index) => (
+                      <div
+                        key={index}
+                        data-turn={item.turn}
+                        className={`p-3 bg-[#3a3a3a] rounded-md transition-all duration-300 cursor-pointer ${
+                          currentTurn === item.turn ? 'border-2 border-[#CA60ED]' : ''
+                        }`}
+                        onClick={() => handleTurnChange(item.turn)}
+                      >
+                        <div className="flex items-center space-x-2 mb-2">
+                          <div className="w-8 h-8 bg-[#4a4a4a] rounded-full flex items-center justify-center">
+                            <User className="w-5 h-5" />
+                          </div>
+                          <span className="font-semibold">{item.speaker}</span>
+                          <span className="text-gray-400">Turn {item.turn}</span>
+                        </div>
+                        <p className="text-gray-300">{item.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="h-auto p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+                <h2 className="text-xl font-semibold mb-4 text-center">"{votableQuestions[currentQuestionIndex]}"</h2>
+                <p className="mb-4 text-gray-400 text-center">How would you assess this statement—valid, invalid, or would you prefer to abstain from making a judgment?</p>
+                <div className="flex space-x-2 mb-4 justify-center">
+                  <button className="px-4 py-2 bg-[#CA60ED] rounded-md hover:bg-purple-700 transition-colors">Invalid</button>
+                  <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors">Abstain</button>
+                  <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors">Valid</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <aside className={`bg-[#131214] border border-[#2F3133] transition-all duration-300 ease-in-out shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] ${isRelatedMediaOpen ? 'w-80' : 'w-0'}`}>
+          <div className="p-4 h-full overflow-y-auto custom-scrollbar">
+            <h2 className="text-xl font-semibold mb-4">Related Media</h2>
+            <div className="space-y-4">
+              {[1, 2, 3, 4, 5,6,7].map((item) => (
+                <div key={item} className="bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                  <div className="flex items-center space-x-3">
+                    <Image src={`/placeholder.svg?height=60&width=80`} alt={`Thumbnail ${item}`} width={80} height={60} className="rounded-md" />
+                    <div>
+                      <h3 className="font-semibold mb-1">Video Title {item}</h3>
+                      <span className="text-gray-400 text-sm">Promoted</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
+
         <button
-          onClick={() => scroll('right')}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-full z-10 hover:bg-[#4a4a4a] transition-all duration-300"
+          className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-l-md hover:bg-[#4a4a4a] transition-all duration-300"
+          onClick={() => setIsRelatedMediaOpen(!isRelatedMediaOpen)}
         >
-          <ChevronRight className="w-5 h-5" />
+          {isRelatedMediaOpen ? <ChevronRight className="w-6 h-6" /> : <Radio className="w-6 h-6" />}
         </button>
       </div>
-    </div>
-  )
-}
 
-export default function DebateHighlights() {
-  const segments = [
-    { title: 'Introduction', icon: <User className="w-5 h-5" />, description: 'Opening statements and introductions', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Questions', icon: <FileText className="w-5 h-5" />, description: 'Key questions posed during the debate', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Responses', icon: <User className="w-5 h-5" />, description: 'Candidates\' answers to important issues', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Rebuttals', icon: <User className="w-5 h-5" />, description: 'Counter-arguments and clarifications', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Closing', icon: <User className="w-5 h-5" />, description: 'Final remarks and conclusions', image: '/placeholder.svg?height=157&width=280' },
-  ]
+      <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <Avatar>
+              <AvatarImage src="/profiles/hasib.jpg" />
+              <AvatarFallback>Profile</AvatarFallback>
+            </Avatar>
+          </div>
+          <div className="text-right text-[13px] space-y-2">
+            <p>Segment: {currentSegment}</p>
+            <p>Speaker Purpose: {speakerPurpose}</p>
+            <p>Target Audience: {targetAudience}</p>
+          </div>
+        </div>
+      </footer>
 
-  const topics = [
-    { title: 'Healthcare', icon: <BarChart2 className="w-5 h-5" />, description: 'Discussion on healthcare policies', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Gun Control', icon: <BarChart2 className="w-5 h-5" />, description: 'Debate on gun control measures', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Economy', icon: <BarChart2 className="w-5 h-5" />, description: 'Economic policies and plans', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Taxes', icon: <BarChart2 className="w-5 h-5" />, description: 'Tax reform proposals', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Foreign Policy', icon: <BarChart2 className="w-5 h-5" />, description: 'International relations and diplomacy', image: '/placeholder.svg?height=157&width=280' },
-  ]
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#131214] border border-[#2F3133] rounded-full p-2 flex items-center space-x-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+        <div className="flex items-center space-x-2">
+          <button onClick={() => handleTurnChange(currentTurn - 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <div className="w-12 h-12 bg-[#CA60ED] rounded-full flex items-center justify-center text-2xl font-bold">
+            {currentTurn}
+          </div>
+          <button onClick={() => handleTurnChange(currentTurn + 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+        <input
+          type="range"
+          min="1"
+          max={transcriptData.length}
+          value={currentTurn}
+          onChange={(e) => handleTurnChange(parseInt(e.target.value))}
+          className="w-48 accent-[#CA60ED]"
+        />
+      </div>
 
-  const flags = [
-    { title: 'Interruptions', icon: <User className="w-5 h-5" />, description: 'Moments of significant interruptions', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Dramatic', icon: <User className="w-5 h-5" />, description: 'Highly charged or emotional exchanges', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Emotional', icon: <User className="w-5 h-5" />, description: 'Displays of strong emotions', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Weak Points', icon: <User className="w-5 h-5" />, description: 'Identified weaknesses in arguments', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Fact Checks', icon: <User className="w-5 h-5" />, description: 'Verification of claims made during debate', image: '/placeholder.svg?height=157&width=280' },
-  ]
-
-  return (
-    <div className="min-h-screen bg-[#131214] text-white p-8">
-      <style jsx global>{`
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-      <h1 className="text-4xl font-bold mb-8 px-4">Debate Highlights</h1>
-      <HighlightRow title="Segments" items={segments} />
-      <HighlightRow title="Topics" items={topics} />
-      <HighlightRow title="Flags" items={flags} />
+      {activePopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[#131214] border border-[#2F3133] p-6 rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] w-3/4 h-3/4 overflow-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">
+                {activePopup === 'graph1' && 'Graph 1'}
+                {activePopup === 'graph2' && 'Graph 2'}
+                {activePopup === 'annotation' && 'Textual Annotation'}
+              </h2>
+              <button onClick={handlePopupClose} className="text-gray-500 hover:text-white transition-colors">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full bg-[#3a3a3a] rounded-md p-4">
+              {activePopup === 'graph1' && <BarChart2 className="w-full h-full" />}
+              {activePopup === 'graph2' && <BarChart2 className="w-full h-full" />}
+              {activePopup === 'annotation' && (
+                <div className="h-full flex items-center justify-center">
+                  <p className="text-xl">Expanded view of the textual annotation</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
