@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Timer, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
 import Image from 'next/image'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -297,10 +297,12 @@ export default function Component() {
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center text-[30px] space-x-4">
-            <span>Time: {getTotalTime()} </span>
+            <span className='flex justify-center items-center gap-2'>
+              <Timer className="w-8 h-8" /> {getTotalTime()} 
+            </span>
           </div>
           <div className="text-right text-[13px] space-y-2">
-            <p>egment: {currentSegment}</p>
+            <p>Segment: {currentSegment}</p>
             <p>Purpose: {speakerPurpose}</p>
             <p>Target: {targetAudience}</p>
           </div>
