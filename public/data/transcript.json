@@ -1,6 +1,0 @@
-[
-    { "turn": 1, "speaker": "Muir", "content": "Good evening from Hofstra University in Hempstead, New York. I'm Lester Holt, anchor of 'NBC Nightly News.' I want to welcome you to the first presidential debate." },
-    { "turn": 2, "speaker": "Trump", "content": "Thank you, Lester. It's wonderful to be here." },
-    { "turn": 3, "speaker": "Clinton", "content": "Thank you. It's a pleasure to be here with you, Donald." }
-  ]
-  

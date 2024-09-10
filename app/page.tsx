@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import JFile from "@/public/data/debate_analysis.json"
+import JFile from "@/public/data/debate_analysis1.json"
 
 export default function Component() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
@@ -130,7 +130,7 @@ export default function Component() {
           <div className="flex items-center">
             <div className="text-center">
               <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
-                49 - 70
+                
               </div>
               <div className="text-xl mt-2">Score</div>
             </div>
