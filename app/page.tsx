@@ -297,10 +297,10 @@ export default function Component() {
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center text-[30px] space-x-4">
-            <span>{getTotalTime()} </span>
+            <span>Time: {getTotalTime()} </span>
           </div>
           <div className="text-right text-[13px] space-y-2">
-            <p>Segment: {currentSegment}</p>
+            <p>egment: {currentSegment}</p>
             <p>Purpose: {speakerPurpose}</p>
             <p>Target: {targetAudience}</p>
           </div>
