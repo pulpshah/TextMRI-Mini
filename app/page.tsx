@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Header from '@/components/Header'
-import Transcript from '@/components/transcript'
+import Transcript from '@/components/Transcript'
 import VotableQuestion from '@/components/VotableQuestion'
 import GraphCard from '@/components/GraphCard'
 import TextAnnotationCard from '@/components/TextAnnotationCard'
