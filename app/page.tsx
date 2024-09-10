@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import JFile from "@/public/data/debate_analysis.json"
 
 export default function Component() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
@@ -17,14 +18,48 @@ export default function Component() {
   const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
   const transcriptRef = useRef<HTMLDivElement | null>(null);
 
-  const transcriptData = [
-    { turn: 1, speaker: 'Hasib', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
-    { turn: 2, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
-    { turn: 3, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
-    { turn: 4, speaker: 'Hasib', content: 'Good evening from Hofstra University in Hempstead, New York. I\'m Lester Holt, anchor of "NBC Nightly News." I want to welcome you to the first presidential debate.' },
-    { turn: 5, speaker: 'Trump', content: 'Thank you, Lester. It\'s wonderful to be here.' },
-    { turn: 6, speaker: 'Harris', content: 'Thank you. It\'s a pleasure to be here with you, Donald.' },
-  ]
+  const dataObj = JFile.Data;
+  
+  // Function to dynamically calculate Kamala's turn (using Biden for now) count based on the turnNumber
+  const getKamalaTurn = () => {
+    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Kamala Harris").length;
+  };
+  
+
+  // Function to dynamically calculate Trump's turn count based on the turnNumber
+  const getTrumpTurn = () => {
+    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Donald Trump").length;
+  };
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.round(seconds % 60);
+    return `${minutes}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Function to dynamically calculate Kamala's total talk time up to the currentTurn
+  const getKamalaTime = () => {
+    const seconds = dataObj
+      .slice(0, currentTurn)
+      .filter(turn => turn.speaker === "Kamala Harris")
+      .reduce((total, turn) => total + (turn.endTime - turn.startTime), 0);
+    return (formatTime(seconds));
+  };
+
+  // Function to dynamically calculate Trump's total talk time up to the currentTurn
+  const getTrumpTime = () => {
+    const seconds = dataObj
+      .slice(0, currentTurn)
+      .filter(turn => turn.speaker === "Donald Trump")
+      .reduce((total, turn) => total + (turn.endTime - turn.startTime), 0);
+    return (formatTime(seconds));
+  };
+
+  const transcriptData = dataObj.map((turn, index) => ({
+    turn: index + 1,
+    speaker: turn.speaker,
+    content: turn.content
+  }));
 
   const votableQuestions = [
     "Because you'd be in jail.",
@@ -78,8 +113,8 @@ export default function Component() {
               <h3 className="font-semibold">Donald J. Trump</h3>
               <div className="flex items-center space-x-2 text-sm">
                 <span className="bg-red-600 px-2 py-1 rounded-full">Republican</span>
-                <span>0:25 Talk Time </span>
-                <span>• 1 Turns </span>
+                <span>Talk Time: {getTrumpTime()} </span>
+                <span>• Turns: {getTrumpTurn()}</span>
               </div>
             </div>
           </div>
@@ -98,8 +133,8 @@ export default function Component() {
               <h3 className="font-semibold">Kamala Harris</h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
                 <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
-                <span>0:45 Talk Time</span>
-                <span>• 2 Turns</span>
+                <span>Talk Time: {getKamalaTime()} </span>
+                <span>• Turns: {getKamalaTurn()}</span>
               </div>
             </div>
             <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />
