@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Timer, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X,Target, Timer, TableOfContents, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
 import Image from 'next/image'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -301,10 +301,12 @@ export default function Component() {
               <Timer className="w-8 h-8" /> {getTotalTime()} 
             </span>
           </div>
-          <div className="text-right text-[13px] space-y-2">
-            <p>Segment: {currentSegment}</p>
-            <p>Purpose: {speakerPurpose}</p>
-            <p>Target: {targetAudience}</p>
+          <div className="flex flex-col items-end text-[13px] space-y-2">
+            <p className='flex items-center'> <TableOfContents 
+            className="w-4 h-4 me-1" />       {currentSegment}
+            </p>
+            <p>?: {speakerPurpose}</p>
+            <p className='flex items-center'><Target className="w-4 h-4" />  : {targetAudience}</p>
           </div>
         </div>
       </footer>
