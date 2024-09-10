@@ -36,32 +36,31 @@ export default function Component() {
     const secs = Math.round(seconds % 60);
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
-
-  // Function to dynamically calculate Kamala's total talk time up to the currentTurn
-  const getKamalaTime = () => {
+  
+  // Generic function to dynamically calculate total talk time for a given speaker up to the currentTurn
+  const getSpeakerTime = (speaker: string) => {
     const seconds = dataObj
       .slice(0, currentTurn)
-      .filter(turn => turn.speaker === "Kamala Harris")
+      .filter(turn => turn.speaker === speaker)
       .reduce((total, turn) => total + (turn.endTime - turn.startTime), 0);
-    return (formatTime(seconds));
+    return formatTime(seconds);
   };
-
-  // Function to dynamically calculate Trump's total talk time up to the currentTurn
-  const getTrumpTime = () => {
-    const seconds = dataObj
-      .slice(0, currentTurn)
-      .filter(turn => turn.speaker === "Donald Trump")
-      .reduce((total, turn) => total + (turn.endTime - turn.startTime), 0);
-    return (formatTime(seconds));
-  };
-
-  const getTime = () => {
+  
+  // Usage for Kamala Harris
+  const getKamalaTime = () => getSpeakerTime("Kamala Harris");
+  
+  // Usage for Donald Trump
+  const getTrumpTime = () => getSpeakerTime("Donald Trump");
+  
+  // Function to calculate total time regardless of the speaker
+  const getTotalTime = () => {
     const seconds = dataObj
       .slice(0, currentTurn)
       .filter(turn => turn.startTime)
       .reduce((total, turn) => total + (turn.endTime - turn.startTime), 0);
-    return (formatTime(seconds));
+    return formatTime(seconds);
   };
+  
 
   const transcriptData = dataObj.map((turn, index) => ({
     turn: index + 1,
@@ -253,7 +252,7 @@ export default function Component() {
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center text-[30px] space-x-4">
-            <span>{getTime()} </span>
+            <span>{getTotalTime()} </span>
           </div>
           <div className="text-right text-[13px] space-y-2">
             <p>Segment: {currentSegment}</p>
