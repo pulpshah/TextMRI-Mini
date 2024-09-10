@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Home } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { Button } from "@/components/ui/button"
 
 const HighlightRow = ({ title, items }) => {
   const [scrollPosition, setScrollPosition] = useState(0)
@@ -123,16 +125,8 @@ export default function DebateHighlights() {
     { title: 'Foreign Policy', icon: <BarChart2 className="w-5 h-5" />, description: 'International relations and diplomacy', image: '/placeholder.svg?height=157&width=280' },
   ]
 
-  const flags = [
-    { title: 'Interruptions', icon: <User className="w-5 h-5" />, description: 'Moments of significant interruptions', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Dramatic', icon: <User className="w-5 h-5" />, description: 'Highly charged or emotional exchanges', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Emotional', icon: <User className="w-5 h-5" />, description: 'Displays of strong emotions', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Weak Points', icon: <User className="w-5 h-5" />, description: 'Identified weaknesses in arguments', image: '/placeholder.svg?height=157&width=280' },
-    { title: 'Fact Checks', icon: <User className="w-5 h-5" />, description: 'Verification of claims made during debate', image: '/placeholder.svg?height=157&width=280' },
-  ]
-
   return (
-    <div className="min-h-screen bg-[#131214] text-white p-8">
+    <div className="min-h-screen bg-[#131214] text-white p-8 relative">
       <style jsx global>{`
         .no-scrollbar {
           -ms-overflow-style: none;
@@ -142,6 +136,12 @@ export default function DebateHighlights() {
           display: none;
         }
       `}</style>
+      <Link href="/" passHref>
+        <Button className="absolute top-4 right-4 bg-[#3a3a3a] hover:bg-[#4a4a4a]">
+          <Home className="w-5 h-5 mr-2" />
+          Transcript View
+        </Button>
+      </Link>
       <h1 className="text-4xl font-bold mb-8 px-4">Debate Highlights</h1>
       <HighlightRow title="Segments" items={segments} />
       <HighlightRow title="Topics" items={topics} />

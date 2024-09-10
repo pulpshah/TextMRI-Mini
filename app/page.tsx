@@ -120,7 +120,7 @@ export default function Component() {
   }
 
   return (
-    <div className="flex flex-col h-screen text-white bg-[#131214] max-xl:hidden">
+    <div className="flex flex-col h-screen text-white bg-[#131214]">
       <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
@@ -148,9 +148,10 @@ export default function Component() {
             <div className="text-right">
               <h3 className="font-semibold">Kamala Harris</h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
-                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
+                
                 <span>Talk Time: {getKamalaTime()} </span>
                 <span>• Turns: {getKamalaTurn()}</span>
+                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
               </div>
             </div>
             <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />
