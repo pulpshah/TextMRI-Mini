@@ -244,11 +244,8 @@ export default function Component() {
 
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <Avatar>
-              <AvatarImage src="/profiles/hasib.jpg" />
-              <AvatarFallback>Profile</AvatarFallback>
-            </Avatar>
+          <div className="flex items-center text-[30px] space-x-4">
+            <span>{getTrumpTime()} </span>
           </div>
           <div className="text-right text-[13px] space-y-2">
             <p>Segment: {currentSegment}</p>
