@@ -54,21 +54,22 @@ const HighlightRow: React.FC<HighlightRowProps> = ({ title, items }) => {
   }
 
   useEffect(() => {
-    const container = scrollContainerRef.current
+    const container = scrollContainerRef.current;
     if (container) {
-      container.addEventListener('mousedown', onMouseDown)
-      container.addEventListener('mouseup', onMouseUp)
-      container.addEventListener('mousemove', onMouseMove)
-      container.addEventListener('mouseleave', onMouseUp)
-
+      container.addEventListener('mousedown', onMouseDown);
+      container.addEventListener('mouseup', onMouseUp);
+      container.addEventListener('mousemove', onMouseMove);
+      container.addEventListener('mouseleave', onMouseUp);
+  
       return () => {
-        container.removeEventListener('mousedown', onMouseDown)
-        container.removeEventListener('mouseup', onMouseUp)
-        container.removeEventListener('mousemove', onMouseMove)
-        container.removeEventListener('mouseleave', onMouseUp)
-      }
+        container.removeEventListener('mousedown', onMouseDown);
+        container.removeEventListener('mouseup', onMouseUp);
+        container.removeEventListener('mousemove', onMouseMove);
+        container.removeEventListener('mouseleave', onMouseUp);
+      };
     }
-  }, [isDragging, startX, scrollLeft])
+  }, [onMouseDown, onMouseUp, onMouseMove]);
+  
 
   return (
     <div className="mb-12">
