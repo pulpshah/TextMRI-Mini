@@ -75,9 +75,8 @@ const HighlightRow = ({ title, items }) => {
           {items.map((item, index) => (
             <div
               key={index}
-              className="flex-none w-72 bg-[#131214] border border-[#2F3133] rounded-lg p-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] hover:bg-[#1a1a1c] transition-all duration-300 transform hover:scale-105 cursor-pointer relative"
+              className="flex-none w-72 bg-[#131214] border border-[#2F3133] rounded-lg p-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] hover:bg-[#1a1a1c] transition-all duration-300 transform hover:scale-105 cursor-pointer"
             >
-              <div className="absolute inset-x-0 top-0 h-1 bg-[#CA60ED] rounded-t-lg"></div>
               <div className="flex items-center space-x-3 mb-2">
                 {item.icon}
                 <h3 className="font-semibold">{item.title}</h3>
@@ -121,6 +120,7 @@ export default function DebateHighlights() {
     { title: 'Economy', icon: <BarChart2 className="w-5 h-5" />, description: 'Economic policies and plans', image: '/placeholder.svg?height=157&width=280' },
     { title: 'Taxes', icon: <BarChart2 className="w-5 h-5" />, description: 'Tax reform proposals', image: '/placeholder.svg?height=157&width=280' },
     { title: 'Foreign Policy', icon: <BarChart2 className="w-5 h-5" />, description: 'International relations and diplomacy', image: '/placeholder.svg?height=157&width=280' },
+    
   ]
 
   const flags = [
