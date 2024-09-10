@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Maximize2, Volume2, Radio } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
 import Image from 'next/image'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -18,14 +18,22 @@ export default function Component() {
   const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
   const transcriptRef = useRef<HTMLDivElement | null>(null);
 
-  const dataObj = JFile.Data;
+  type DebateTurn = {
+    speaker: string;
+    startTime: number;
+    endTime: number;
+    score: number;
+    content: string;
+  };
+  
+  const dataObj: DebateTurn[] = JFile.Data;
+  
   
   // Function to dynamically calculate Kamala's turn (using Biden for now) count based on the turnNumber
   const getKamalaTurn = () => {
     return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Kamala Harris").length;
   };
   
-
   // Function to dynamically calculate Trump's turn count based on the turnNumber
   const getTrumpTurn = () => {
     return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Donald Trump").length;
@@ -73,8 +81,6 @@ export default function Component() {
   const getKamalaScore = () => getSpeakerScore("Kamala Harris");
   const getTrumpScore = () => getSpeakerScore("Donald Trump");
   
-  
-
   const transcriptData = dataObj.map((turn, index) => ({
     turn: index + 1,
     speaker: turn.speaker,
@@ -123,16 +129,31 @@ export default function Component() {
     document.body.style.overflow = 'auto'
   }
 
+  const relatedMedia = [
+    { type: 'podcast', title: 'Debate Analysis Podcast', Icon: Headphones },
+    { type: 'video', title: 'Key Moments Breakdown', Icon: Video },
+    { type: 'article', title: 'Fact-Checking the Debate', Icon: ArticleIcon },
+    { type: 'podcast', title: 'Expert Commentary', Icon: Headphones },
+    { type: 'video', title: 'Candidate Highlights', Icon: Video },
+    { type: 'article', title: 'Policy Comparison', Icon: ArticleIcon },
+    { type: 'podcast', title: 'Voter Reactions', Icon: Headphones },
+  ];
+
   return (
     <div className="flex flex-col h-screen text-white bg-[#131214]">
       <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <Image src="/profiles/trump.png" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full border-4 border-red-600"></div>
+              <Image src="/profiles/trump.png" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
+            </div>
             <div>
-              <h3 className="font-semibold">Donald J. Trump</h3>
+              <h3 className="font-semibold flex items-center">
+                Donald J. Trump
+                <Image src="/profiles/republicanicon.svg" alt="Republican Party" width={18} height={16} className="ml-2" />
+              </h3>
               <div className="flex items-center space-x-2 text-sm">
-                <span className="bg-red-600 px-2 py-1 rounded-full">Republican</span>
                 <span>Talk Time: {getTrumpTime()} </span>
                 <span>• Turns: {getTrumpTurn()}</span>
               </div>
@@ -155,51 +176,25 @@ export default function Component() {
 
           <div className="flex items-center space-x-4">
             <div className="text-right">
-              <h3 className="font-semibold">Kamala Harris</h3>
+              <h3 className="font-semibold flex items-center justify-end">
+                <Image src="/profiles/democraticon.svg" alt="Democratic Party" width={20} height={16} className="mr-2" />
+                Kamala Harris
+              </h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
                 <span>Talk Time: {getKamalaTime()} </span>
                 <span>• Turns: {getKamalaTurn()}</span>
-                <span className="bg-blue-600 px-2 py-1 mt-1 rounded-full">Democrat</span>
               </div>
             </div>
-            <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full border-4 border-blue-600"></div>
+              <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />
+            </div>
           </div>
         </div>
       </header>
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 p-4 overflow-hidden">
           <div className="flex h-full space-x-4">
-            <div className="w-1/2 flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar">
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('graph1')}
-              >
-                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
-                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
-              </div>
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('annotation')}
-              >
-                <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
-                <p className="text-gray-300">Explain Stuff</p>
-              </div>
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('graph2')}
-              >
-                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
-                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
-              </div>
-              
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('annotation')}
-              >
-                <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
-                <p className="text-gray-300">Explain Stuff</p>
-              </div>
-            </div>
             <div className="w-1/2 flex flex-col space-y-4">
               <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden">
                 <h2 className="text-xl font-semibold mb-2">Transcript</h2>
@@ -237,6 +232,36 @@ export default function Component() {
                 </div>
               </div>
             </div>
+            <div className="w-1/2 flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('graph1')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
+                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
+              </div>
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('annotation')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
+                <p className="text-gray-300">Explain Stuff</p>
+              </div>
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('graph2')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
+                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
+              </div>
+              <div 
+                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
+                onClick={() => handlePopupOpen('annotation')}
+              >
+                <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
+                <p className="text-gray-300">Explain Stuff</p>
+              </div>
+            </div>
           </div>
         </main>
 
@@ -244,13 +269,15 @@ export default function Component() {
           <div className="p-4 h-full overflow-y-auto custom-scrollbar">
             <h2 className="text-xl font-semibold mb-4">Related Media</h2>
             <div className="space-y-4">
-              {[1, 2, 3, 4, 5,6,7].map((item) => (
-                <div key={item} className="bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer">
+              {relatedMedia.map((item, index) => (
+                <div key={index} className="bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer">
                   <div className="flex items-center space-x-3">
-                    <Image src={`/placeholder.svg?height=60&width=80`} alt={`Thumbnail ${item}`} width={80} height={60} className="rounded-md" />
+                    <div className="w-16 h-16 bg-[#2F3133] rounded-md flex items-center justify-center">
+                      <item.Icon className="w-8 h-8" />
+                    </div>
                     <div>
-                      <h3 className="font-semibold mb-1">Video Title {item}</h3>
-                      <span className="text-gray-400 text-sm">Promoted</span>
+                      <h3 className="font-semibold mb-1">{item.title}</h3>
+                      <span className="text-gray-400 text-sm capitalize">{item.type}</span>
                     </div>
                   </div>
                 </div>
