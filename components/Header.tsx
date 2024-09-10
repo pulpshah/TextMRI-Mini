@@ -48,7 +48,7 @@ export default function Header({
             <div className="text-xl w-16 mx-auto mt-2 mb-2">
               <img src="profiles/logo.svg" alt="" />
             </div>
-            <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
+            <div className="text-4xl font-bold bg-gradient-to-r from-red-600 to-blue-600 text-transparent bg-clip-text animate-pulse">
               {getTrumpScore()} • {getKamalaScore()}
             </div>
           </div>
