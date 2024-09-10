@@ -28,15 +28,9 @@ export default function Component() {
   
   const dataObj: DebateTurn[] = JFile.Data;
   
-  
-  // Function to dynamically calculate Kamala's turn (using Biden for now) count based on the turnNumber
-  const getKamalaTurn = () => {
-    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Kamala Harris").length;
-  };
-  
   // Function to dynamically calculate Trump's turn count based on the turnNumber
-  const getTrumpTurn = () => {
-    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Donald Trump").length;
+  const getSpeakerTurn = (speaker: string) => {
+    return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === speaker).length;
   };
 
   const formatTime = (seconds: number): string => {
@@ -54,12 +48,6 @@ export default function Component() {
     return formatTime(seconds);
   };
   
-  // Usage for Kamala Harris
-  const getKamalaTime = () => getSpeakerTime("Kamala Harris");
-  
-  // Usage for Donald Trump
-  const getTrumpTime = () => getSpeakerTime("Donald Trump");
-  
   // Function to calculate total time regardless of the speaker
   const getTotalTime = () => {
     const seconds = dataObj
@@ -71,15 +59,9 @@ export default function Component() {
 
   const getSpeakerScore = (speaker: string) => {
     const turns = dataObj.slice(0, currentTurn + 1)
-      .filter(turn => turn.speaker === speaker);
-      
-    // Return the score of the last turn if it exists
+      .filter(turn => turn.speaker === speaker);      
     return turns.length > 0 ? turns[turns.length - 1].score : 0;
   };
-  
-  // Usage for Kamala Harris
-  const getKamalaScore = () => getSpeakerScore("Kamala Harris");
-  const getTrumpScore = () => getSpeakerScore("Donald Trump");
   
   const transcriptData = dataObj.map((turn, index) => ({
     turn: index + 1,
@@ -154,8 +136,8 @@ export default function Component() {
                 <Image src="/profiles/republicanIcon.svg" alt="Republican Party" width={18} height={16} className="ml-2" />
               </h3>
               <div className="flex items-center space-x-2 text-sm">
-                <span>Talk Time: {getTrumpTime()} </span>
-                <span>• Turns: {getTrumpTurn()}</span>
+                <span>Talk Time: {getSpeakerTime("Donald Trump")} </span>
+                <span>• Turns: {getSpeakerTurn("Donald Trump")}</span>
               </div>
             </div>
           </div>
@@ -169,7 +151,7 @@ export default function Component() {
                 <img src="profiles/logo.svg" alt="" />
               </div>
               <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
-                {getTrumpScore()} • {getKamalaScore()}
+                {getSpeakerScore("Donald Trump")} • {getSpeakerScore("Kamala Harris")}
               </div>
             </div>
           </div>
@@ -181,8 +163,8 @@ export default function Component() {
                 Kamala Harris
               </h3>
               <div className="flex items-center space-x-2 text-sm justify-end">
-                <span>Talk Time: {getKamalaTime()} </span>
-                <span>• Turns: {getKamalaTurn()}</span>
+                <span>Talk Time: {getSpeakerTime("Kamala Harris")} </span>
+                <span>• Turns: {getSpeakerTurn("Kamala Harris")}</span>
               </div>
             </div>
             <div className="relative">
