@@ -1,4 +1,6 @@
-[
+{
+
+    "Data": [
     {
         "turn": 1,
         "speaker": "Jake Tapper",
@@ -185,10 +187,10 @@
         "speaker": "Dana Bash",
         "startTime": 31.939999,
         "endTime": 63.059998,
-        "content": "This debate is being produced by CNN and is coming to you live on CNN, CNN International, CNN dot com, CNN Max, and CNN Espanol. This is a pivotal moment between president Joe Biden and former president Donald Trump in their rematch for the nation's highest office. Each will make his case to the American people with just over 4 months until election day. Good evening. I'm Dana Bash, anchor of CNN's Inside Politics and co anchor of State of the Union.",
+        "content": "This debate is being produced by CNN and is coming to you live on CNN, CNN International, CNN dot com, CNN Max, and CNN Espanol. This is a pivotal moment between president Kamala Harris and former president Donald Trump in their rematch for the nation's highest office. Each will make his case to the American people with just over 4 months until election day. Good evening. I'm Dana Bash, anchor of CNN's Inside Politics and co anchor of State of the Union.",
         "claim_of_facts_abstractive_claim": "The debate is a pivotal moment in the upcoming presidential election.",
         "claim_of_facts_extractive_supporting_quotes_claim": [
-            "This is a pivotal moment between president Joe Biden and former president Donald Trump in their rematch for the nation's highest office."
+            "This is a pivotal moment between president Kamala Harris and former president Donald Trump in their rematch for the nation's highest office."
         ],
         "claim_of_facts_abstractive_argument": "With only four months until election day, this debate plays a crucial role in shaping voter opinion and candidates' strategies.",
         "claim_of_facts_extractive_supporting_quotes_argument": [
@@ -301,7 +303,7 @@
         "epl_logos_fallacy_expl": [],
         "named_entities_key_phrases": [
             "CNN",
-            "president Joe Biden",
+            "president Kamala Harris",
             "former president Donald Trump",
             "election day"
         ],
@@ -313,7 +315,7 @@
         ],
         "named_entities_people": [
             "Dana Bash",
-            "Joe Biden",
+            "Kamala Harris",
             "Donald Trump"
         ],
         "named_entities_people_relevancy": [
@@ -494,7 +496,7 @@
         "named_entities_people": [
             "Jake Tapper",
             "Donald Trump",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.9,
@@ -715,10 +717,10 @@
         "speaker": "Jake Tapper",
         "startTime": 135.395,
         "endTime": 139.87,
-        "content": "Now please welcome the 46th president of the United States, Joe Biden.",
-        "claim_of_facts_abstractive_claim": "Joe Biden has officially been introduced as the 46th president of the United States.",
+        "content": "Now please welcome the 46th president of the United States, Kamala Harris.",
+        "claim_of_facts_abstractive_claim": "Kamala Harris has officially been introduced as the 46th president of the United States.",
         "claim_of_facts_extractive_supporting_quotes_claim": [
-            "please welcome the 46th president of the United States, Joe Biden."
+            "please welcome the 46th president of the United States, Kamala Harris."
         ],
         "claim_of_facts_abstractive_argument": "The introduction signifies Biden's official role and acknowledgment as the current president in the debate context.",
         "claim_of_facts_extractive_supporting_quotes_argument": [],
@@ -829,14 +831,14 @@
         "epl_logos_fallacy_expl": [],
         "named_entities_key_phrases": [
             "46th president of the United States",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_key_phrases_relevancy": [
             1.9,
             1.8
         ],
         "named_entities_people": [
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8
@@ -864,7 +866,7 @@
         "style_simile": 1.0,
         "style_simile_expl": "No similes are used; the language is direct and factual.",
         "clarity": 2,
-        "clarity_expl": "Jake Tapper succinctly and clearly introduces President Joe Biden, making it easy for the audience to identify the candidate being welcomed.",
+        "clarity_expl": "Jake Tapper succinctly and clearly introduces President Kamala Harris, making it easy for the audience to identify the candidate being welcomed.",
         "relevancy": [
             1,
             1
@@ -877,11 +879,11 @@
     },
     {
         "turn": 6,
-        "speaker": "Joe Biden",
+        "speaker": "Kamala Harris",
         "startTime": 141.77,
         "endTime": 149.625,
         "content": "Oh, it's Hawaii. Thanks for being here. Thanks.",
-        "claim_of_facts_abstractive_claim": "Joe Biden acknowledges the audience's presence during the debate.",
+        "claim_of_facts_abstractive_claim": "Kamala Harris acknowledges the audience's presence during the debate.",
         "claim_of_facts_extractive_supporting_quotes_claim": [
             "Thanks for being here."
         ],
@@ -998,7 +1000,7 @@
             1.7
         ],
         "named_entities_people": [
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8
@@ -1030,14 +1032,14 @@
         "style_simile": 1.0,
         "style_simile_expl": "No similes are found; the statement remains simple and literal.",
         "clarity": 0,
-        "clarity_expl": "Joe Biden's statement lacks clarity as it is vague and does not provide any meaningful context or information related to the debate.",
+        "clarity_expl": "Kamala Harris's statement lacks clarity as it is vague and does not provide any meaningful context or information related to the debate.",
         "relevancy": [
             0,
             0
         ],
         "relevancy_expl": "The content is not relevant to the ongoing subject of the debate or the expected actions, as it does not address the debate or the moderator's introduction purposefully.",
         "system1_score": 0.7,
-        "system1_explanation": "Joe Biden's response is casual and emotional, displaying warmth and appreciation towards the audience, which fosters an immediate connection.",
+        "system1_explanation": "Kamala Harris's response is casual and emotional, displaying warmth and appreciation towards the audience, which fosters an immediate connection.",
         "system2_score": 0.3,
         "system2_explanation": "While there is a recognition of location and gratitude, the statement lacks depth and complex reasoning, offering a more instinctive response rather than a logical one."
     },
@@ -1185,7 +1187,7 @@
         ],
         "named_entities_people": [
             "Donald Trump",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8,
@@ -1235,11 +1237,11 @@
     },
     {
         "turn": 8,
-        "speaker": "Joe Biden",
+        "speaker": "Kamala Harris",
         "startTime": 200.51001,
         "endTime": 313.21,
         "content": "We gotta take a look at what I was left when I became president and what mister Trump loved me. We had an economy that was in free fall. The pandemic was so badly handled. Many people were dying. All he said was, It's not that serious. Just inject a little bleach in your arm. It'll be alright. The economy collapsed. There were no jobs. Unemployment rate rose to 15%. It was terrible. And so what we had to do is try to put things back together again. That's exactly what we began to do. We created 15,000 new jobs. We brought out another position where we have 800,000 new manufacturing jobs. But there's more to be done. There's more to be done. Working class people are still in trouble. I come from Scranton, Pennsylvania. I come up household where the kitchen tables, things weren't able to be met during the month. It was a problem. Price of eggs, the price of gas, the price of housing, the price of a whole range of things. That's why I'm working so hard to make sure I deal with those problems. And we're going to make sure that we reduce the price of housing. We're going to make sure we build 2,000,000 new units. We're going to make sure we cap rents so corporate greed can't take over. The combination I was left with the corporate greed is the reason why we're in this problem right now. In addition to that, we're in a situation where if you had take a look at all that was done in his administration, he didn't do much at all. By the time he left, there's things around chaos, literally chaos. And so we put things back together. We created, I said, those jobs. We'd make sure we had a situation where we now we brought down the price of prescription drugs, which is a major issue for many people. The $15 for for an insulin shot as opposed to $400 No senior has to pay more than $200 for any drug, all the drugs they could include beginning next year. And the situation is making and we're going to make that available to everybody, to all Americans. So we're working to bring down the price around the kitchen table, and that's what we're gonna get done.",
-        "claim_of_facts_abstractive_claim": "Joe Biden highlights the economic challenges and recovery efforts following Trump's presidency.",
+        "claim_of_facts_abstractive_claim": "Kamala Harris highlights the economic challenges and recovery efforts following Trump's presidency.",
         "claim_of_facts_extractive_supporting_quotes_claim": [
             "We had an economy that was in free fall.",
             "Unemployment rate rose to 15%.",
@@ -1401,7 +1403,7 @@
             1.7
         ],
         "named_entities_people": [
-            "Joe Biden",
+            "Kamala Harris",
             "Donald Trump"
         ],
         "named_entities_people_relevancy": [
@@ -1449,14 +1451,14 @@
         "style_simile": 1.0,
         "style_simile_expl": "No similes are present; Biden's statements are straightforward and do not include explicit comparisons.",
         "clarity": 1,
-        "clarity_expl": "Joe Biden's response contains some clear points about the economy and his administration's actions, but the message can become convoluted and slightly difficult to follow due to the length and complexity of the statements.",
+        "clarity_expl": "Kamala Harris's response contains some clear points about the economy and his administration's actions, but the message can become convoluted and slightly difficult to follow due to the length and complexity of the statements.",
         "relevancy": [
             1,
             1
         ],
         "relevancy_expl": "The content is highly relevant to the topic at hand, directly addressing Tapper's question about the economy and reflecting on the past administration, which aligns well with the expected discussion during the debate.",
         "system1_score": 0.55,
-        "system1_explanation": "Joe Biden's response is passionate and emotive, drawing on personal experiences and expressing urgency about economic issues, which resonates emotionally with an audience.",
+        "system1_explanation": "Kamala Harris's response is passionate and emotive, drawing on personal experiences and expressing urgency about economic issues, which resonates emotionally with an audience.",
         "system2_score": 0.45,
         "system2_explanation": "While Biden incorporates some logical arguments and data about job creation and economic recovery, the flow is more instinctive and reactive rather than strictly analytical."
     },
@@ -1944,7 +1946,7 @@
             1.8
         ],
         "named_entities_people": [
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8
@@ -1985,7 +1987,7 @@
     },
     {
         "turn": 12,
-        "speaker": "Joe Biden",
+        "speaker": "Kamala Harris",
         "startTime": 376.925,
         "endTime": 433.455,
         "content": "Well, look, the greatest economy in the world, he he's the only one who thinks that, I think. I don't know anybody else who thinks he's the greatest economy in the world. And, you know, the fact of the matter is that, we pride ourselves in a situation where his his economy, he rewarded the wealthy. He had the largest tax cut in American history, $2,000,000,000,000 He raised a deficit larger than any president has in any one term. He's the only president other than Herbert Hoover who's had lost more jobs than he had when he began, since Herbert Hoover. The idea that he did something that was significant in the military. You know, when he was president, there were still killing people in Afghanistan. He didn't do anything about that. When he was president, we were still find ourselves in a position where you had a notion that we were the safe country. Truth is, I'm the only president this century that doesn't have any this this decade, that don't have any troops dying anywhere in the world like he did.",
@@ -2137,7 +2139,7 @@
             1.7
         ],
         "named_entities_people": [
-            "Joe Biden",
+            "Kamala Harris",
             "Donald Trump",
             "Herbert Hoover"
         ],
@@ -2177,14 +2179,14 @@
         "style_simile": 1.0,
         "style_simile_expl": "No similes are present; Biden's arguments are straightforward without explicit comparisons.",
         "clarity": 1,
-        "clarity_expl": "Joe Biden's response presents some clear counterpoints to Trump's statements, but the overall message is somewhat cluttered with statistics and assertions that make it less coherent than it could be.",
+        "clarity_expl": "Kamala Harris's response presents some clear counterpoints to Trump's statements, but the overall message is somewhat cluttered with statistics and assertions that make it less coherent than it could be.",
         "relevancy": [
             1,
             1
         ],
         "relevancy_expl": "The content is relevant to the ongoing debate about the economy and military, as Biden counters Trump's claims and addresses the core issues of the discussion, maintaining focus on the points raised by his opponent.",
         "system1_score": 0.45,
-        "system1_explanation": "Joe Biden's response includes emotional undertones as he challenges Trump's assertions, appealing to the audience\u2019s logic and sense of fairness regarding economic conditions.",
+        "system1_explanation": "Kamala Harris's response includes emotional undertones as he challenges Trump's assertions, appealing to the audience\u2019s logic and sense of fairness regarding economic conditions.",
         "system2_score": 0.55,
         "system2_explanation": "Biden's use of historical comparison and statistics demonstrates a rational approach, as he seeks to provide a structured, logical argument to counter Trump's claims about the economy and military actions."
     },
@@ -2841,7 +2843,7 @@
         ],
         "named_entities_people": [
             "Donald Trump",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8,
@@ -3040,7 +3042,7 @@
         ],
         "named_entities_people": [
             "Donald Trump",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8,
@@ -3256,7 +3258,7 @@
         ],
         "named_entities_people": [
             "Donald Trump",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8,
@@ -3428,7 +3430,7 @@
         ],
         "named_entities_people": [
             "Donald Trump",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8,
@@ -3470,11 +3472,11 @@
     },
     {
         "turn": 20,
-        "speaker": "Joe Biden",
+        "speaker": "Kamala Harris",
         "startTime": 668.99,
         "endTime": 731.24,
         "content": "He had the largest national debt of any president in 4 year period, number 1. Number 2, he got $2,000,000,000,000 tax cut benefited the very wealthy. The I what I'm gonna do is fix the taxes. For example, we have a 1,000,000,000,000,000 in America. I mean, 1,000,000,000 in America. And what's happening? They're in a situation where they in fact pay 8.2% in taxes. If they just paid 24%, or 25%, either one of those numbers, they'd raise $500,000,000 $1,000,000,000 I should say, in a 10 year period. We'd be able to wipe out his debt. We'd be able to help make sure that all those things we need to do, childcare, elder care, making sure that we continue to strengthen our health care system, making sure that we're able to make every single solitary person eligible for what I've been able to do with the, with with the COVID excuse me, with dealing with everything we have to do with, look, if we finally beat Medicare.",
-        "claim_of_facts_abstractive_claim": "Joe Biden contends that Trump's presidency resulted in the largest national debt increase in a four-year period.",
+        "claim_of_facts_abstractive_claim": "Kamala Harris contends that Trump's presidency resulted in the largest national debt increase in a four-year period.",
         "claim_of_facts_extractive_supporting_quotes_claim": [
             "He had the largest national debt of any president in 4 year period."
         ],
@@ -3626,7 +3628,7 @@
             1.6
         ],
         "named_entities_people": [
-            "Joe Biden",
+            "Kamala Harris",
             "Donald Trump"
         ],
         "named_entities_people_relevancy": [
@@ -3676,14 +3678,14 @@
         "style_simile": 1.0,
         "style_simile_expl": "No similes are found; Biden's arguments are direct and do not include explicit comparisons.",
         "clarity": 1,
-        "clarity_expl": "Joe Biden's response presents several arguments regarding taxation and national debt, but the statements can become somewhat disorganized and lacking in clear structure, which makes it slightly harder to follow.",
+        "clarity_expl": "Kamala Harris's response presents several arguments regarding taxation and national debt, but the statements can become somewhat disorganized and lacking in clear structure, which makes it slightly harder to follow.",
         "relevancy": [
             1,
             1
         ],
         "relevancy_expl": "The content is relevant to the ongoing discussion about national debt and taxation, as it directly addresses Trump's record and proposes potential solutions to the issues at hand, maintaining focus on significant economic concerns.",
         "system1_score": 0.5,
-        "system1_explanation": "Joe Biden's response exhibits emotional engagement as he critiques Trump\u2019s administration, appealing to listeners' sentiments about wealth inequality and governmental responsibility.",
+        "system1_explanation": "Kamala Harris's response exhibits emotional engagement as he critiques Trump\u2019s administration, appealing to listeners' sentiments about wealth inequality and governmental responsibility.",
         "system2_score": 0.5,
         "system2_explanation": "Biden presents factual arguments regarding tax reforms and potential revenue generation, indicating a structured response aimed at addressing the national debt while providing specific data to support his points."
     },
@@ -3812,7 +3814,7 @@
             1.8
         ],
         "named_entities_people": [
-            "Joe Biden",
+            "Kamala Harris",
             "Donald Trump"
         ],
         "named_entities_people_relevancy": [
@@ -4003,7 +4005,7 @@
         ],
         "named_entities_people": [
             "Donald Trump",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8,
@@ -4761,7 +4763,7 @@
             1.8
         ],
         "named_entities_people": [
-            "Joe Biden",
+            "Kamala Harris",
             "Dana Bash"
         ],
         "named_entities_people_relevancy": [
@@ -4804,11 +4806,11 @@
     },
     {
         "turn": 27,
-        "speaker": "Joe Biden",
+        "speaker": "Kamala Harris",
         "startTime": 955.32996,
         "endTime": 1018.88,
         "content": "It's been a terrible thing, what you've done. The fact is that the vast majority of constitutional scholars supported Roe when it was decided, supported Roe. And that was that's this idea that they were all against it is just ridiculous. And this is the guy who says the state should be able to have it. We're a state where in 6 weeks, you don't even know whether you're pregnant or not, but you cannot see a doctor, have your and have him decide on what your circumstances are, whether you need help. The idea that states are able to do this is a little like saying, we're going to turn civil rights back to the states. Let each state have a different rule. Look, there's so many young women who have been, including a young woman who just was murdered and he went to the funeral. And the idea that she was murdered by a by an immigrant coming in to they talk about that. But here's the deal, there's a lot of young women to be raped by their by their in laws, by their by their spouses, brothers and sisters, by just it's just ridiculous, and they can do nothing about it. And then try to arrest them when they cross state lines.",
-        "claim_of_facts_abstractive_claim": "Joe Biden argues that a significant majority of constitutional scholars supported Roe v Wade at the time of its decision.",
+        "claim_of_facts_abstractive_claim": "Kamala Harris argues that a significant majority of constitutional scholars supported Roe v Wade at the time of its decision.",
         "claim_of_facts_extractive_supporting_quotes_claim": [
             "the vast majority of constitutional scholars supported Roe when it was decided."
         ],
@@ -4948,7 +4950,7 @@
             1.7
         ],
         "named_entities_people": [
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8
@@ -4980,14 +4982,14 @@
         "style_simile": 1.0,
         "style_simile_expl": "No similes are present; Biden's arguments are direct and do not involve explicit comparisons.",
         "clarity": 1,
-        "clarity_expl": "Joe Biden's response conveys strong points against Trump's stance on abortion rights and emphasizes the implications for women's health and rights, yet the argument could be more effectively organized for enhanced clarity.",
+        "clarity_expl": "Kamala Harris's response conveys strong points against Trump's stance on abortion rights and emphasizes the implications for women's health and rights, yet the argument could be more effectively organized for enhanced clarity.",
         "relevancy": [
             1,
             1
         ],
         "relevancy_expl": "The content is relevant as it directly addresses Trump's comments about states' rights and abortion, engaging in the central debate topic while pointing out potential consequences on women's rights and health.",
         "system1_score": 0.65,
-        "system1_explanation": "Joe Biden's response is emotionally charged, invoking strong feelings about women's rights and personal safety, which resonates with the audience's concerns about the implications of restrictive abortion laws.",
+        "system1_explanation": "Kamala Harris's response is emotionally charged, invoking strong feelings about women's rights and personal safety, which resonates with the audience's concerns about the implications of restrictive abortion laws.",
         "system2_score": 0.35,
         "system2_explanation": "While Biden provides some logical arguments regarding the implications of state control over abortion, his delivery primarily appeals to emotion and the urgency of the issue rather than strictly structured reasoning."
     },
@@ -5476,7 +5478,7 @@
         ],
         "named_entities_people": [
             "Dana Bash",
-            "Joe Biden"
+            "Kamala Harris"
         ],
         "named_entities_people_relevancy": [
             1.8,
@@ -5520,4 +5522,5 @@
         "system2_score": 0.6,
         "system2_explanation": "The inquiry is structured logically, prompting Biden to clarify his stance on legal limits regarding abortion, which encourages a substantive discussion based on legal and ethical considerations."
     }
-]
+    ]
+}
