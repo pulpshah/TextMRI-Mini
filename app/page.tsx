@@ -168,7 +168,7 @@ export default function Component() {
               <div className="text-xl w-16 mx-auto mt-2 mb-2">
                 <img src="profiles/logo.svg" alt="" />
               </div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
+              <div className="text-4xl font-bold bg-gradient-to-r from-red-600 to-blue-600 text-transparent bg-clip-text animate-pulse">
                 {getTrumpScore()} • {getKamalaScore()}
               </div>
             </div>
@@ -295,43 +295,44 @@ export default function Component() {
       </div>
 
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center text-[30px] space-x-4">
-            <span className='flex justify-center items-center gap-2'>
-              <Timer className="w-8 h-8" /> {getTotalTime()} 
-            </span>
-          </div>
-          <div className="flex flex-col items-end text-[13px] space-y-2">
-            <p className='flex items-center'> <TableOfContents 
-            className="w-4 h-4 me-1" />       {currentSegment}
-            </p>
-            <p>?: {speakerPurpose}</p>
-            <p className='flex items-center'><Target className="w-4 h-4" />  : {targetAudience}</p>
-          </div>
-        </div>
-      </footer>
+  <div className="flex justify-between items-center">
+    <div className="flex flex-col items-start text-[13px] space-y-2">
+      <p className='flex items-center'>
+        <TableOfContents className="w-4 h-4 me-1" /> {currentSegment}
+      </p>
+      <p>?: {speakerPurpose}</p>
+      <p className='flex items-center'>
+        <Target className="w-4 h-4 me-1" /> : {targetAudience}
+      </p>
+    </div>
+  </div>
+</footer>
 
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#131214] border border-[#2F3133] rounded-full p-2 flex items-center space-x-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
-        <div className="flex items-center space-x-2">
-          <button onClick={() => handleTurnChange(currentTurn - 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <div className="w-12 h-12 bg-[#CA60ED] rounded-full flex items-center justify-center text-2xl font-bold">
-            {currentTurn}
-          </div>
-          <button onClick={() => handleTurnChange(currentTurn + 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-        <input
-          type="range"
-          min="1"
-          max={transcriptData.length}
-          value={currentTurn}
-          onChange={(e) => handleTurnChange(parseInt(e.target.value))}
-          className="w-48 accent-[#CA60ED]"
-        />
-      </div>
+<div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#131214] border border-[#2F3133] rounded-xl p-2 flex items-center space-x-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+  <div className="flex items-center space-x-2">
+    <button onClick={() => handleTurnChange(currentTurn - 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
+      <ChevronLeft className="w-5 h-5" />
+    </button>
+    <div className="w-12 h-12 bg-[#CA60ED] rounded-xl flex items-center justify-center text-2xl font-bold">
+      {currentTurn}
+    </div>
+    <button onClick={() => handleTurnChange(currentTurn + 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
+      <ChevronRight className="w-5 h-5" />
+    </button>
+  </div>
+  <input
+    type="range"
+    min="1"
+    max={transcriptData.length}
+    value={currentTurn}
+    onChange={(e) => handleTurnChange(parseInt(e.target.value))}
+    className="w-48 accent-[#CA60ED]"
+  />
+  <div className="flex items-center space-x-1">
+    <Timer className="w-6 h-6" />
+    <span className="text-lg">{getTotalTime()}</span>
+  </div>
+</div>
 
       {activePopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
