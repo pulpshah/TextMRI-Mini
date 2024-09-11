@@ -21,7 +21,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import { Button } from "@/components/ui/button"
-import JFile from "@/public/data/debate_analysis1.json"
+import JFile from "@/public/data/debate_analysis.json"
 
 export default function Component() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
@@ -44,7 +44,7 @@ export default function Component() {
     speaker: string;
     startTime: number;
     endTime: number;
-    score: number;
+    cumulative_score: number;
     content: string;
     turn_score: number; // Added turn_score field
   };
@@ -94,7 +94,7 @@ export default function Component() {
   const getSpeakerScore = (speaker: string) => {
     const turns = dataObj.slice(0, currentTurn + 1)
       .filter(turn => turn.speaker === speaker);
-    return turns.length > 0 ? turns[turns.length - 1].score : 0;
+    return turns.length > 0 ? turns[turns.length - 1].cumulative_score : 0;
   };
   
   //Get Each Score
