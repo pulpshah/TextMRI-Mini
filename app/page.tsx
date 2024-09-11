@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones, Video, FileText as ArticleIcon, Search, Minimize2, Maximize2, Move } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones, Video, FileText as ArticleIcon, Search, Minimize2, Maximize2, Move, MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
@@ -19,7 +19,30 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
-import JFile from "@/public/data/debate_analysis1.json"
+import JFile from "@/public/data/debate_analysis1.json";
+
+type MediaItem = {
+  type: string;
+  title: string;
+  url: string;
+  icon: React.ComponentType;
+  image: string | null;
+}
+
+type JsonTurnData = {
+  turn: number;
+  speaker: string;
+  startTime: number;
+  endTime: number;
+  content: string;
+  claim_of_facts_abstractive_claim: string;
+  claim_of_facts_extractive_supporting_quotes_claim: string[];
+  score: number;
+  facts_topic_ref?: [string, string, { IMAGES?: string[] }][];
+  value_topic_ref?: [string, string, { IMAGES?: string[] }][];
+  policy_topic_ref?: [string, string, { IMAGES?: string[] }][];
+  [key: string]: any;
+}
 
 export default function Component() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
@@ -31,6 +54,55 @@ export default function Component() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState('1')
+  const [relatedMedia, setRelatedMedia] = useState<MediaItem[]>([])
+
+  useEffect(() => {
+    updateRelatedMedia(currentTurn)
+  }, [currentTurn])
+
+  const updateRelatedMedia = (turn: number) => {
+    const turnData = (JFile.Data as JsonTurnData[]).find(item => item.turn === turn)
+    if (!turnData) return
+
+    const media: MediaItem[] = []
+
+    const addMedia = (references: [string, string, { IMAGES?: string[] }][] | undefined, topicType: string) => {
+      if (!references) return
+      references.forEach(([type, url, mediaInfo]) => {
+        let icon: React.ComponentType
+        switch (type) {
+          case 'ARTICLE':
+            icon = ArticleIcon
+            break
+          case 'DISCUSSION':
+            icon = MessageCircle
+            break
+          case 'VIDEO':
+            icon = Video
+            break
+          case 'PODCAST':
+            icon = Headphones
+            break
+          default:
+            icon = FileText
+        }
+
+        media.push({
+          type,
+          title: `${topicType}: ${type}`,
+          url,
+          icon,
+          image: mediaInfo?.IMAGES?.[0] || null
+        })
+      })
+    }
+
+    addMedia(turnData.facts_topic_ref, 'Fact')
+    addMedia(turnData.value_topic_ref, 'Value')
+    addMedia(turnData.policy_topic_ref, 'Policy')
+
+    setRelatedMedia(media)
+  }
 
   // Floating Voting Module states
   const [isMinimized, setIsMinimized] = useState(false)
@@ -167,17 +239,6 @@ export default function Component() {
     }
   }
 
-  //revise this to grab from the json
-  const relatedMedia = [
-    { type: 'podcast', title: 'Debate Analysis Podcast', Icon: Headphones },
-    { type: 'video', title: 'Key Moments Breakdown', Icon: Video },
-    { type: 'article', title: 'Fact-Checking the Debate', Icon: ArticleIcon },
-    { type: 'podcast', title: 'Expert Commentary', Icon: Headphones },
-    { type: 'video', title: 'Candidate Highlights', Icon: Video },
-    { type: 'article', title: 'Policy Comparison', Icon: ArticleIcon },
-    { type: 'podcast', title: 'Voter Reactions', Icon: Headphones },
-  ];
-
   const handleDragStart = () => setIsDragging(true)
   const handleDragEnd = () => setIsDragging(false)
 
@@ -293,25 +354,29 @@ export default function Component() {
         </main>
         {/* Related Media */}
         <aside className={`bg-[#131214] border border-[#2F3133] transition-all duration-300 ease-in-out shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] ${isRelatedMediaOpen ? 'w-80' : 'w-0'}`}>
-          <div className="p-4 h-full overflow-y-auto custom-scrollbar">
-            <h2 className="text-xl font-semibold mb-4">Related Media</h2>
-            <div className="space-y-4">
-              {relatedMedia.map((item,index) => (
-                <div key={index} className="bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                  <div className="flex items-center space-x-3">
+        <div className="p-4 h-full overflow-y-auto custom-scrollbar">
+          <h2 className="text-xl font-semibold mb-4">Related Media</h2>
+          <div className="space-y-4">
+            {relatedMedia.map((item, index) => (
+              <div key={index} className="bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                <div className="flex items-center space-x-3">
+                  {item.image ? (
+                    <Image src={item.image} alt={item.title} width={64} height={64} className="w-16 h-16 object-cover rounded-md" />
+                  ) : (
                     <div className="w-16 h-16 bg-[#2F3133] rounded-md flex items-center justify-center">
-                      <item.Icon className="w-8 h-8" />
+                      <item.icon className="w-8 h-8" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{item.title}</h3>
-                      <span className="text-gray-400 text-sm capitalize">{item.type}</span>
-                    </div>
+                  )}
+                  <div>
+                    <h3 className="font-semibold mb-1">{item.title}</h3>
+                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline text-sm">View Source</a>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        </aside>
+        </div>
+      </aside>
 
         <button
           className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-l-md hover:bg-[#4a4a4a] transition-all duration-300"

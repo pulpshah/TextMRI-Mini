@@ -360,7 +360,47 @@
             "system1_explanation": "Dana Bash's delivery contains some emotional engagement, emphasizing the importance of the event and potentially capturing the audience's attention.",
             "system2_score": 0.75,
             "system2_explanation": "The introduction is logical and structured, clearly outlining the broadcasting details and the stakes of the debate, reflecting a careful approach to delivering the information.",
-            "score": 87
+            "score": 87,
+            "facts_topic_ref": null,
+            "value_topic_ref": [
+                [
+                    "DISCUSSION",
+                    "https://www.quora.com/unanswered/What-is-the-importance-of-debates-shown-on-news-channels",
+                    null
+                ],
+                [
+                    "ARTICLE",
+                    "https://www.cambridge.org/core/journals/politics-and-gender/article/black-women-keepers-of-democracy-the-democratic-process-and-the-democratic-party/8372A741075812D0AC7ACDDA5C871E19",
+                    {
+                        "IMAGES": [
+                            "https://static.cambridge.org/covers/PAG_0_0_0/politics-and-gender.jpg",
+                            "https://www.cambridge.org/binary/version/id/urn:cambridge.org:id:binary:20240305010938118-0800:S1743923X23000417:S1743923X23000417_fig1.png",
+                            "https://www.cambridge.org/binary/version/id/urn:cambridge.org:id:binary:20240305010938118-0800:S1743923X23000417:S1743923X23000417_tab1.png",
+                            "https://www.cambridge.org/binary/version/id/urn:cambridge.org:id:binary:20240305010938118-0800:S1743923X23000417:S1743923X23000417_fig2.png",
+                            "https://www.cambridge.org/binary/version/id/urn:cambridge.org:id:binary:20240305010938118-0800:S1743923X23000417:S1743923X23000417_tab2.png",
+                            "https://www.cambridge.org/binary/version/id/urn:cambridge.org:id:binary:20240305010938118-0800:S1743923X23000417:S1743923X23000417_fig3.png"
+                        ],
+                        "VIDEOS": []
+                    }
+                ]
+            ],
+            "policy_topic_ref": [
+                [
+                    "ARTICLE",
+                    "https://www.voanews.com/a/europe_putin-signs-amendments-foreign-agents-law/6200136.html",
+                    {
+                        "IMAGES": [
+                            "https://www.voanews.com/Content/responsive/VOA/img/image-placeholder.svg"
+                        ],
+                        "VIDEOS": []
+                    }
+                ],
+                [
+                    "NO TYPE",
+                    "https://www.washingtontimes.com/rss/topics/tina-kotek/329259/",
+                    null
+                ]
+            ]
         },
         {
             "turn": 3,
