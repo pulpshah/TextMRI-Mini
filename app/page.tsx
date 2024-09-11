@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, Tv, Search, ChevronLeft, BarChart2, FileText, User, X,Target, Timer, TableOfContents, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
+import { ChevronRight, Tv, Search, ChevronLeft, BarChart2, FileText, User, X, Target, Timer, TableOfContents, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 import Link from 'next/link'
@@ -23,9 +23,9 @@ export default function App() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
   const [currentTurn, setCurrentTurn] = useState(1)
   const [activePopup, setActivePopup] = useState<string | null>(null);
-  const [currentSegment, setCurrentSegment] = useState('Introduction')
-  const [speakerPurpose, setSpeakerPurpose] = useState('To inform')
-  const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
+  const [currentSegment, setCurrentSegment] = useState('')
+  const [currentTopic, setCurrentTopic] = useState('')
+  const [targetAudience, setTargetAudience] = useState('') // New state for targetAudience
   const transcriptRef = useRef<HTMLDivElement | null>(null);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -43,10 +43,13 @@ export default function App() {
     cumulative_score: number;
     content: string;
     turn_score: number;
+    Phase: string; // Added Phase for segment
+    Topic: string; // Added Topic for current topic
+    target_audience: string; // Added target_audience for the target audience
   };
   
   // Load debate data from JSON file
-  const dataObj = JFile.Data;
+  const dataObj: DebateTurn[] = JFile.Data;
   
   // Function to get the number of turns for Kamala Harris
   const getKamalaTurn = () => {
@@ -76,8 +79,6 @@ export default function App() {
   
   // Functions to get speaking time for Kamala Harris and Donald Trump
   const getKamalaTime = () => getSpeakerTime("Kamala Harris");
-  
-  // Usage for Donald Trump
   const getTrumpTime = () => getSpeakerTime("Donald Trump");
 
   // Function to get total debate time
@@ -107,6 +108,31 @@ export default function App() {
     content: turn.content,
     turn_score: turn.turn_score // {{ edit_1 }} Added turn_score property
   }));
+
+  // Function to update current segment based on current turn
+  const updateCurrentSegment = () => {
+    const currentTurnData = dataObj.find(turn => turn.turn === currentTurn);
+    setCurrentSegment(currentTurnData ? currentTurnData.Phase : '');
+  };
+
+  // Function to update current topic based on current turn
+  const updateCurrentTopic = () => {
+    const currentTurnData = dataObj.find(turn => turn.turn === currentTurn);
+    setCurrentTopic(currentTurnData ? currentTurnData.Topic : '');
+  };
+
+  // Function to update target audience based on current turn
+  const updateTargetAudience = () => {
+    const currentTurnData = dataObj.find(turn => turn.turn === currentTurn);
+    setTargetAudience(currentTurnData ? currentTurnData.target_audience : '');
+  };
+
+  // useEffect to update segment, topic, and target audience whenever currentTurn changes
+  useEffect(() => {
+    updateCurrentSegment();
+    updateCurrentTopic();
+    updateTargetAudience(); // Update target audience
+  }, [currentTurn]);
 
   // Function to handle turn changes
   const handleTurnChange = (newTurn: number) => {
@@ -138,7 +164,8 @@ export default function App() {
           </div>
         </main>
         {/* Related media component */}
-<RelatedMedia isRelatedMediaOpen={isRelatedMediaOpen} currentTurn={currentTurn} />        {/* Toggle button for related media */}
+        <RelatedMedia isRelatedMediaOpen={isRelatedMediaOpen} currentTurn={currentTurn} />
+        {/* Toggle button for related media */}
         <button
           className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-l-md hover:bg-[#4a4a4a] transition-all duration-300"
           onClick={() => setIsRelatedMediaOpen(!isRelatedMediaOpen)}
@@ -149,8 +176,8 @@ export default function App() {
       {/* Footer component */}
       <Footer 
         currentSegment={currentSegment} 
-        speakerPurpose={speakerPurpose} 
-        targetAudience={targetAudience} 
+        currentTopic={currentTopic} 
+        targetAudience={targetAudience} // Pass target audience to Footer
       />
       {/* Turn slider component */}
       <TurnSlider 
