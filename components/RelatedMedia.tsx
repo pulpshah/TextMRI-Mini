@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { FileText, MessageCircle, Video, Headphones } from 'lucide-react'
 import JFile from "@/public/data/Trump_Harris_Annotated_Transcript.json"
 import React from 'react'
@@ -68,12 +67,11 @@ export default function RelatedMedia({ isRelatedMediaOpen, currentTurn }: Relate
             icon = FileText
         }
     
-        // Truncate the URL to the first 30 characters if it's too long
         const truncatedUrl = url.length > 10 ? `${url.slice(0, 10)}...` : url;
     
         media.push({
           type,
-          title: mediaInfo?.IMAGES?.[0] || truncatedUrl,  // Use truncated URL as the title if no specific title is provided
+          title: mediaInfo?.IMAGES?.[0] || truncatedUrl,
           url,
           icon,
           image: mediaInfo?.IMAGES?.[0] || null,
@@ -82,9 +80,6 @@ export default function RelatedMedia({ isRelatedMediaOpen, currentTurn }: Relate
       })
     }
     
-    
-
-    // Process each type of reference
     addMedia(turnData.facts_topic_ref, 'Facts Topic Reference')
     addMedia(turnData.value_topic_ref, 'Value Topic Reference')
     addMedia(turnData.policy_topic_ref, 'Policy Topic Reference')
@@ -105,31 +100,38 @@ export default function RelatedMedia({ isRelatedMediaOpen, currentTurn }: Relate
   }
 
   return (
-    // Aside element with dynamic width based on isRelatedMediaOpen prop
     <aside className={`bg-[#131214] border border-[#2F3133] transition-all duration-300 ease-in-out shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] ${isRelatedMediaOpen ? 'w-80' : 'w-0'}`}>
-      {/* Container for the content with scrolling */}
       <div className="p-4 h-full overflow-y-auto custom-scrollbar">
         <h2 className="text-xl font-semibold mb-4">Related Media</h2>
-        {/* Container for media items */}
         <div className="space-y-4">
-          {relatedMedia.map((item, index) => (
-            <div key={index} className="bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer">
-              <div className="flex items-center space-x-3">
-                {item.image ? (
-                  <img src={item.image} alt={item.title} width={64} height={64} className="w-16 h-16 object-cover rounded-md" />
-                ) : (
-                  <div className="w-16 h-16 bg-[#2F3133] rounded-md flex items-center justify-center">
-                    {React.createElement(item.icon as React.ComponentType<{ className?: string }>, { className: "w-8 h-8" })} 
+          {relatedMedia.length > 0 ? (
+            relatedMedia.map((item, index) => (
+              <a 
+                key={index} 
+                href={item.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="block bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer"
+              >
+                <div className="flex items-center space-x-3">
+                  {item.image ? (
+                    <img src={item.image} alt={item.title} width={64} height={64} className="w-16 h-16 object-cover rounded-md" />
+                  ) : (
+                    <div className="w-16 h-16 bg-[#2F3133] rounded-md flex items-center justify-center">
+                      {React.createElement(item.icon as React.ComponentType<{ className?: string }>, { className: "w-8 h-8" })} 
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="font-semibold mb-1">{item.title}</h3>
+                    <p className="text-gray-400 text-sm mb-1">{item.referenceType}</p>
+                    <span className="text-blue-400 hover:underline text-sm">View Source</span>
                   </div>
-                )}
-                <div>
-                  <h3 className="font-semibold mb-1">{item.title}</h3>
-                  <p className="text-gray-400 text-sm mb-1">{item.referenceType}</p> {/* Subheading for reference type */}
-                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline text-sm">View Source</a>
                 </div>
-              </div>
-            </div>
-          ))}
+              </a>
+            ))
+          ) : (
+            <p className="text-gray-400">No references for this turn.</p>
+          )}
         </div>
       </div>
     </aside>
