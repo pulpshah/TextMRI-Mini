@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Move, Maximize2, Minimize2 } from 'lucide-react'
+"use client"
 
-// Define the props type for the component
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Move, Minimize2, Vote } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
+
 type FloatingVotingModuleProps = {
   constraintsRef: React.RefObject<HTMLDivElement>;
 }
 
 export default function FloatingVotingModule({ constraintsRef }: FloatingVotingModuleProps) {
-  // State to control whether the module is minimized
   const [isMinimized, setIsMinimized] = useState(false)
-  // State to control the position of the module
   const [position, setPosition] = useState({ x: 20, y: 20 })
-  // State to track if the module is being dragged
   const [isDragging, setIsDragging] = useState(false)
-  // State to keep track of the current question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [hasNewQuestion, setHasNewQuestion] = useState(false)
+  const lastQuestionIndexRef = useRef(0)
 
-  // Array of votable questions
   const votableQuestions = [
     "Because you'd be in jail.",
     "We're going to make America great again.",
@@ -27,68 +27,128 @@ export default function FloatingVotingModule({ constraintsRef }: FloatingVotingM
     "I'm not a politician, I'm a businessman."
   ]
 
-  // Effect to change the question every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentQuestionIndex((prevIndex) => (prevIndex + 1) % votableQuestions.length)
-    }, 10000) // Change question every 10 seconds
+      setCurrentQuestionIndex((prevIndex) => {
+        const newIndex = (prevIndex + 1) % votableQuestions.length
+        if (newIndex !== lastQuestionIndexRef.current) {
+          setHasNewQuestion(true)
+          lastQuestionIndexRef.current = newIndex
+        }
+        return newIndex
+      })
+    }, 10000)
 
-    // Clean up the interval on component unmount
     return () => clearInterval(interval)
   }, [])
 
-  // Handlers for drag start and end
   const handleDragStart = () => setIsDragging(true)
   const handleDragEnd = () => setIsDragging(false)
 
+  const handleClick = () => {
+    if (!isDragging) {
+      setIsMinimized(false)
+      setHasNewQuestion(false)
+    }
+  }
+
+  const shapeVariants = {
+    minimized: { 
+      width: 64, 
+      height: 64, 
+      borderRadius: 32,
+      transition: { duration: 0.2 }
+    },
+    expanded: { 
+      width: 320, 
+      height: 'auto', 
+      borderRadius: 8,
+      transition: { duration: 0.2 }
+    }
+  }
+
   return (
-    <motion.div
-      drag // Enable dragging
-      dragMomentum={false} // Disable momentum after dragging
-      dragConstraints={constraintsRef} // Constrain dragging within the parent element
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      initial={position} // Set initial position
-      animate={position} // Animate to new position when it changes
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }} // Spring animation for smooth movement
-      className={`absolute ${
-        isMinimized ? 'w-12 h-12' : 'w-80 h-auto'
-      } bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden pointer-events-auto`}
-    >
-      {/* Header bar with drag handle and minimize/maximize button */}
-      <div className="p-2 bg-[#2F3133] flex justify-between items-center cursor-move">
-        <Move className="w-4 h-4 text-gray-400" />
-        <button
-          onClick={() => setIsMinimized(!isMinimized)}
-          className="text-gray-400 hover:text-white transition-colors"
-        >
-          {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
-        </button>
-      </div>
-      {/* Main content of the module, only shown when not minimized */}
-      {!isMinimized && (
-        <div className="p-4">
-          {/* Display the current question */}
-          <h2 className="text-xl font-semibold mb-4 text-center text-white">
-            "{votableQuestions[currentQuestionIndex]}"
-          </h2>
-          <p className="mb-4 text-gray-400 text-center">
-            How would you assess this statement—valid, invalid, or would you prefer to abstain from making a judgment?
-          </p>
-          {/* Voting buttons */}
-          <div className="flex space-x-2 mb-4 justify-center">
-            <button className="px-4 py-2 bg-[#CA60ED] rounded-md hover:bg-[#b74eda] transition-colors text-white">
-              Invalid
-            </button>
-            <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors text-white">
-              Abstain
-            </button>
-            <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors text-white">
-              Valid
-            </button>
-          </div>
-        </div>
-      )}
-    </motion.div>
+    <TooltipProvider>
+      <motion.div
+        drag
+        dragMomentum={false}
+        dragConstraints={constraintsRef}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        initial={position}
+        animate={position}
+        variants={shapeVariants}
+        initial="minimized"
+        animate={isMinimized ? "minimized" : "expanded"}
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        className="absolute bg-[#131214] border border-[#2F3133] shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden pointer-events-auto"
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {isMinimized ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <motion.div
+                  key="minimized"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.1 }}
+                  className="w-full h-full flex items-center justify-center cursor-pointer"
+                  onClick={handleClick}
+                >
+                  <div className="relative">
+                    <Vote className="w-8 h-8 text-gray-400" />
+                    {hasNewQuestion && (
+                      <motion.div
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-[#CA60ED] rounded-full"
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ repeat: Infinity, duration: 0.5 }}
+                      />
+                    )}
+                  </div>
+                </motion.div>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="bg-[#2F3133] text-white p-2 rounded-md max-w-xs">
+                <p className="text-sm">{votableQuestions[currentQuestionIndex]}</p>
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <motion.div
+              key="expanded"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="p-2 bg-[#2F3133] flex justify-between items-center cursor-move">
+                <Move className="w-4 h-4 text-gray-400" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsMinimized(true)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Minimize2 className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="p-4">
+                <h2 className="text-xl font-semibold mb-4 text-center text-white">
+                  "{votableQuestions[currentQuestionIndex]}"
+                </h2>
+                <p className="mb-4 text-gray-400 text-center">
+                  How would you assess this statement—valid, invalid, or would you prefer to abstain from making a judgment?
+                </p>
+                <div className="flex space-x-2 mb-4 justify-center">
+                  <Button variant="destructive" className="bg-[#CA60ED] hover:bg-[#b74eda]">Invalid</Button>
+                  <Button variant="secondary" className="bg-[#3a3a3a] hover:bg-[#4a4a4a] text-white">Abstain</Button>
+                  <Button variant="secondary" className="bg-[#3a3a3a] hover:bg-[#4a4a4a] text-white">Valid</Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </TooltipProvider>
   )
 }
