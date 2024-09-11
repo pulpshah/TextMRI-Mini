@@ -46,6 +46,7 @@ export default function Component() {
     endTime: number;
     score: number;
     content: string;
+    turn_score: number; // Added turn_score field
   };
   
   //Calculate Kamalas Turns
@@ -103,7 +104,8 @@ export default function Component() {
   const transcriptData = dataObj.map((turn, index) => ({
     turn: index + 1,
     speaker: turn.speaker,
-    content: turn.content
+    content: turn.content,
+    turn_score: turn.turn_score
   }));
 
   //Need to revise this to grab claims
@@ -266,12 +268,17 @@ export default function Component() {
                         }`}
                         onClick={() => handleTurnChange(item.turn)}
                       >
-                        <div className="flex items-center space-x-2 mb-2">
-                          <div className="w-8 h-8 bg-[#4a4a4a] rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5" />
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-8 h-8 bg-[#4a4a4a] rounded-full flex items-center justify-center">
+                              <User className="w-5 h-5" />
+                            </div>
+                            <span className="font-semibold">{item.speaker}</span>
                           </div>
-                          <span className="font-semibold">{item.speaker}</span>
-                          <span className="text-gray-400">Turn {item.turn}</span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-gray-400">Turn {item.turn}</span>
+                            <span className="text-xs px-2 py-1 bg-[#2F3133] rounded-full">Score: {item.turn_score}</span>
+                          </div>
                         </div>
                         <p className="text-gray-300">{item.content}</p>
                       </div>
