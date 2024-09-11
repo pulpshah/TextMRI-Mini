@@ -17,6 +17,7 @@ import FloatingVotingModule from '@/components/FloatingVotingModule'
 import SearchDialog from '@/components/SearchDialog'
 
 export default function App() {
+  // State variables for managing various aspects of the application
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
   const [currentTurn, setCurrentTurn] = useState(1)
   const [currentSegment, setCurrentSegment] = useState('Introduction')
@@ -26,8 +27,10 @@ export default function App() {
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState('1')
 
+  // Ref for constraining the floating voting module
   const constraintsRef = useRef(null)
 
+  // Type definition for a debate turn
   type DebateTurn = {
     speaker: string;
     startTime: number;
@@ -37,22 +40,27 @@ export default function App() {
     turn_score: number;
   };
   
+  // Load debate data from JSON file
   const dataObj: DebateTurn[] = JFile.Data;
   
+  // Function to get the number of turns for Kamala Harris
   const getKamalaTurn = () => {
     return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === "Kamala Harris").length;
   };
 
+  // Function to get the number of turns for Donald Trump
   const getTrumpTurn = () => {
     return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === "Donald Trump").length;
   };
 
+  // Function to format time in minutes:seconds
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.round(seconds % 60);
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
   
+  // Function to get speaking time for a specific speaker
   const getSpeakerTime = (speaker: string) => {
     const seconds = dataObj
       .slice(0, currentTurn)
@@ -61,9 +69,11 @@ export default function App() {
     return formatTime(seconds);
   };
   
+  // Functions to get speaking time for Kamala Harris and Donald Trump
   const getKamalaTime = () => getSpeakerTime("Kamala Harris");
   const getTrumpTime = () => getSpeakerTime("Donald Trump");
 
+  // Function to get total debate time
   const getTotalTime = () => {
     const seconds = dataObj
       .slice(0, currentTurn)
@@ -72,15 +82,18 @@ export default function App() {
     return formatTime(seconds);
   };
 
+  // Function to get the cumulative score for a specific speaker
   const getSpeakerScore = (speaker: string) => {
     const turns = dataObj.slice(0, currentTurn + 1)
       .filter(turn => turn.speaker === speaker);
     return turns.length > 0 ? turns[turns.length - 1].cumulative_score : 0;
   };
   
+  // Functions to get scores for Kamala Harris and Donald Trump
   const getKamalaScore = () => getSpeakerScore("Kamala Harris");
   const getTrumpScore = () => getSpeakerScore("Donald Trump");
   
+  // Prepare transcript data for rendering
   const transcriptData = dataObj.map((turn, index) => ({
     turn: index + 1,
     speaker: turn.speaker,
@@ -88,12 +101,14 @@ export default function App() {
     turn_score: turn.turn_score
   }));
 
+  // Function to handle turn changes
   const handleTurnChange = (newTurn: number) => {
     setCurrentTurn(Math.max(1, Math.min(newTurn, transcriptData.length)))
   }
 
   return (
     <div className="flex flex-col h-screen text-white bg-[#131214] max-minimum:hidden">
+      {/* Header component with debate statistics */}
       <Header 
         getTrumpTime={getTrumpTime} 
         getTrumpTurn={getTrumpTurn} 
@@ -105,15 +120,19 @@ export default function App() {
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 p-4 overflow-hidden">
           <div className="flex h-full space-x-4">
+            {/* Transcript component */}
             <Transcript 
               transcriptData={transcriptData} 
               currentTurn={currentTurn} 
               handleTurnChange={handleTurnChange} 
             />
+            {/* Graphs and annotations component */}
             <GraphsAndAnnotations />
           </div>
         </main>
+        {/* Related media component */}
         <RelatedMedia isRelatedMediaOpen={isRelatedMediaOpen} />
+        {/* Toggle button for related media */}
         <button
           className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-l-md hover:bg-[#4a4a4a] transition-all duration-300"
           onClick={() => setIsRelatedMediaOpen(!isRelatedMediaOpen)}
@@ -121,11 +140,13 @@ export default function App() {
           {isRelatedMediaOpen ? <ChevronRight className="w-6 h-6" /> : <Radio className="w-6 h-6" />}
         </button>
       </div>
+      {/* Footer component */}
       <Footer 
         currentSegment={currentSegment} 
         speakerPurpose={speakerPurpose} 
         targetAudience={targetAudience} 
       />
+      {/* Turn slider component */}
       <TurnSlider 
         currentTurn={currentTurn} 
         handleTurnChange={handleTurnChange} 
@@ -136,6 +157,7 @@ export default function App() {
         editValue={editValue}
         setEditValue={setEditValue}
       />
+      {/* Fixed buttons for transcript view and search */}
       <div className="fixed bottom-4 right-4 flex space-x-2 items-center">
         <Link href="/highlights" passHref>
           <Button
@@ -155,9 +177,11 @@ export default function App() {
           <span className="sr-only">Search</span>
         </Button>
       </div>
+      {/* Floating voting module */}
       <div ref={constraintsRef} className="fixed inset-0 pointer-events-none">
         <FloatingVotingModule constraintsRef={constraintsRef} />
       </div>
+      {/* Search dialog component */}
       <SearchDialog isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
     </div>
   )
