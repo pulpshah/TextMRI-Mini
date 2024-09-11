@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		screens: {
+			minimum:"842px",
+		},
 		fontFamily: {
 			stolzl: 'var(--font-stolzl), sans-serif',
 		},
