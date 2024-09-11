@@ -1,35 +1,14 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, Radio, Tv, Search } from 'lucide-react'
+import { ChevronRight, Tv, Search, ChevronLeft, BarChart2, FileText, User, X,Target, Timer, TableOfContents, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
+
 import Link from 'next/link'
 
 import { Button } from "@/components/ui/button"
 import JFile from "@/public/data/debate_analysis.json"
 
-type MediaItem = {
-  type: string;
-  title: string;
-  url: string;
-  icon: React.ComponentType;
-  image: string | null;
-}
-
-type JsonTurnData = {
-  turn: number;
-  speaker: string;
-  startTime: number;
-  endTime: number;
-  content: string;
-  claim_of_facts_abstractive_claim: string;
-  claim_of_facts_extractive_supporting_quotes_claim: string[];
-  score: number;
-  facts_topic_ref?: [string, string, { IMAGES?: string[] }][];
-  value_topic_ref?: [string, string, { IMAGES?: string[] }][];
-  policy_topic_ref?: [string, string, { IMAGES?: string[] }][];
-  [key: string]: any;
-}
 import Header from '@/components/Header'
 import Transcript from '@/components/Transcript'
 import GraphsAndAnnotations from '@/components/GraphsAndAnnotations'
@@ -48,55 +27,7 @@ export default function App() {
   const [speakerPurpose, setSpeakerPurpose] = useState('To inform')
   const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
   const transcriptRef = useRef<HTMLDivElement | null>(null);
-  const [relatedMedia, setRelatedMedia] = useState<MediaItem[]>([])
 
-  useEffect(() => {
-    updateRelatedMedia(currentTurn)
-  }, [currentTurn])
-
-  const updateRelatedMedia = (turn: number) => {
-    const turnData = (JFile.Data as JsonTurnData[]).find(item => item.turn === turn)
-    if (!turnData) return
-
-    const media: MediaItem[] = []
-
-    const addMedia = (references: [string, string, { IMAGES?: string[] }][] | undefined, topicType: string) => {
-      if (!references) return
-      references.forEach(([type, url, mediaInfo]) => {
-        let icon: React.ComponentType
-        switch (type) {
-          case 'ARTICLE':
-            icon = ArticleIcon
-            break
-          case 'DISCUSSION':
-            icon = MessageCircle
-            break
-          case 'VIDEO':
-            icon = Video
-            break
-          case 'PODCAST':
-            icon = Headphones
-            break
-          default:
-            icon = FileText
-        }
-
-        media.push({
-          type,
-          title: `${topicType}: ${type}`,
-          url,
-          icon,
-          image: mediaInfo?.IMAGES?.[0] || null
-        })
-      })
-    }
-
-    addMedia(turnData.facts_topic_ref, 'Fact')
-    addMedia(turnData.value_topic_ref, 'Value')
-    addMedia(turnData.policy_topic_ref, 'Policy')
-
-    setRelatedMedia(media)
-  }
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState('1')
@@ -118,7 +49,6 @@ export default function App() {
   const dataObj: DebateTurn[] = JFile.Data;
   
   // Function to get the number of turns for Kamala Harris
-  // Function to dynamically calculate Kamala's turn (using Biden for now) count based on the turnNumber
   const getKamalaTurn = () => {
     return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Kamala Harris").length;
   };
@@ -174,7 +104,8 @@ export default function App() {
   const transcriptData = dataObj.map((turn, index) => ({
     turn: index + 1,
     speaker: turn.speaker,
-    content: turn.content
+    content: turn.content,
+    turn_score: turn.turn_score // {{ edit_1 }} Added turn_score property
   }));
 
   // Function to handle turn changes
@@ -207,8 +138,7 @@ export default function App() {
           </div>
         </main>
         {/* Related media component */}
-        <RelatedMedia isRelatedMediaOpen={isRelatedMediaOpen} />
-        {/* Toggle button for related media */}
+<RelatedMedia isRelatedMediaOpen={isRelatedMediaOpen} currentTurn={currentTurn} />        {/* Toggle button for related media */}
         <button
           className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-l-md hover:bg-[#4a4a4a] transition-all duration-300"
           onClick={() => setIsRelatedMediaOpen(!isRelatedMediaOpen)}
