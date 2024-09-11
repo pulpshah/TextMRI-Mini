@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones, Tv, Video, FileText as ArticleIcon, Search, Minimize2, Maximize2, Move, Sparkles } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones,Tv, Video, FileText as ArticleIcon, Search, Minimize2, Maximize2, Move, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
@@ -183,17 +183,6 @@ export default function Component() {
   const handleDragStart = () => setIsDragging(true)
   const handleDragEnd = () => setIsDragging(false)
 
-  const getOutlineColor = (speaker: string) => {
-    switch (speaker) {
-      case "Donald Trump":
-        return "border-red-600";
-      case "Kamala Harris":
-        return "border-blue-600";
-      default:
-        return "border-[#CA60ED]";
-    }
-  };
-
   return (
     <div className="flex flex-col h-screen text-white bg-[#131214] max-minimum:hidden">
       {/* Header With Speakers and Score */}
@@ -262,7 +251,7 @@ export default function Component() {
                         key={index}
                         data-turn={item.turn}
                         className={`p-3 bg-[#3a3a3a] rounded-md transition-all duration-300 cursor-pointer ${
-                          currentTurn === item.turn ? `border-2 ${getOutlineColor(item.speaker)}` : ''
+                          currentTurn === item.turn ? 'border-2 border-[#CA60ED]' : ''
                         }`}
                         onClick={() => handleTurnChange(item.turn)}
                       >
@@ -389,24 +378,26 @@ export default function Component() {
         </div>
       </div>
       <div className="fixed bottom-4 right-4 flex space-x-2 items-center">
-        <Link href="/highlights" passHref>
-          <Button
-            className="w-20 h-12 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors shadow-lg flex items-center justify-center"
-          >
-            <Tv className="w-8 h-6" />
-            <span className="sr-only">Transcript View</span>
-          </Button>
-        </Link>
-        <Button
-          variant="default"
-          size="icon"
-          className="w-12 h-12 rounded-lg bg-[#CA60ED] hover:bg-[#d67ff3] transition-colors shadow-lg"
-          onClick={() => setIsSearchOpen(true)}
-        >
-          <Search className="w-6 h-6" />
-          <span className="sr-only">Search</span>
-        </Button>
-      </div>
+  <Link href="/highlights" passHref>
+    <Button
+      className="w-20 h-12 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors shadow-lg flex items-center justify-center"
+    >
+      <Tv className="w-8 h-6" /> {/* Ensured consistent size */}
+      <span className="sr-only">Transcript View</span>
+    </Button>
+  </Link>
+  {/* Keeping Search button unchanged */}
+  <Button
+    variant="default"
+    size="icon"
+    className="w-12 h-12 rounded-lg bg-[#CA60ED] hover:bg-[#d67ff3] transition-colors shadow-lg"
+    onClick={() => setIsSearchOpen(true)}
+  >
+    <Search className="w-6 h-6" />
+    <span className="sr-only">Search</span>
+  </Button>
+</div>
+
 
       {/* Floating Voting Module */}
       <div ref={constraintsRef} className="fixed inset-0 pointer-events-none">
