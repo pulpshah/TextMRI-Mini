@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones, Video, FileText as ArticleIcon, Search } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones, Video, FileText as ArticleIcon, Search, Minimize2, Maximize2, Move } from 'lucide-react'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
@@ -31,6 +32,12 @@ export default function Component() {
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState('1')
 
+  // Floating Voting Module states
+  const [isMinimized, setIsMinimized] = useState(false)
+  const [position, setPosition] = useState({ x: 20, y: 20 })
+  const [isDragging, setIsDragging] = useState(false)
+  const constraintsRef = useRef(null)
+
   type DebateTurn = {
     speaker: string;
     startTime: number;
@@ -39,22 +46,26 @@ export default function Component() {
     content: string;
   };
   
+  //Calculate Kamalas Turns
   const dataObj: DebateTurn[] = JFile.Data;
   
   const getKamalaTurn = () => {
-    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Kamala Harris").length;
-  };
-  
-  const getTrumpTurn = () => {
-    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Donald Trump").length;
+    return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === "Kamala Harris").length;
   };
 
+  //Calculate Trumps Turns
+  const getTrumpTurn = () => {
+    return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === "Donald Trump").length;
+  };
+
+  //Calculate Total Time
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.round(seconds % 60);
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
   
+  //Calculate Each Speakers Time
   const getSpeakerTime = (speaker: string) => {
     const seconds = dataObj
       .slice(0, currentTurn)
@@ -63,9 +74,11 @@ export default function Component() {
     return formatTime(seconds);
   };
   
+  //Get Each Speakers Time
   const getKamalaTime = () => getSpeakerTime("Kamala Harris");
   const getTrumpTime = () => getSpeakerTime("Donald Trump");
-  
+
+  //Format Total Time
   const getTotalTime = () => {
     const seconds = dataObj
       .slice(0, currentTurn)
@@ -74,12 +87,14 @@ export default function Component() {
     return formatTime(seconds);
   };
 
+  //Get Scores
   const getSpeakerScore = (speaker: string) => {
     const turns = dataObj.slice(0, currentTurn + 1)
       .filter(turn => turn.speaker === speaker);
     return turns.length > 0 ? turns[turns.length - 1].score : 0;
   };
   
+  //Get Each Score
   const getKamalaScore = () => getSpeakerScore("Kamala Harris");
   const getTrumpScore = () => getSpeakerScore("Donald Trump");
   
@@ -89,6 +104,7 @@ export default function Component() {
     content: turn.content
   }));
 
+  //Need to revise this to grab claims
   const votableQuestions = [
     "Because you'd be in jail.",
     "We're going to make America great again.",
@@ -98,6 +114,7 @@ export default function Component() {
     "I'm not a politician, I'm a businessman."
   ]
 
+  //Scrolling transcript
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
   useEffect(() => {
@@ -144,13 +161,13 @@ export default function Component() {
     }
   };
   
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleEditComplete()
     }
   }
 
+  //revise this to grab from the json
   const relatedMedia = [
     { type: 'podcast', title: 'Debate Analysis Podcast', Icon: Headphones },
     { type: 'video', title: 'Key Moments Breakdown', Icon: Video },
@@ -161,8 +178,12 @@ export default function Component() {
     { type: 'podcast', title: 'Voter Reactions', Icon: Headphones },
   ];
 
+  const handleDragStart = () => setIsDragging(true)
+  const handleDragEnd = () => setIsDragging(false)
+
   return (
     <div className="flex flex-col h-screen text-white bg-[#131214] max-minimum:hidden">
+      {/* Header With Speakers and Score */}
       <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
@@ -214,6 +235,7 @@ export default function Component() {
           </div>
         </div>
       </header>
+      {/* Turn Slider */}
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 p-4 overflow-hidden">
           <div className="flex h-full space-x-4">
@@ -244,15 +266,6 @@ export default function Component() {
                   </div>
                 </div>
               </div>
-              <div className="h-auto p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
-                <h2 className="text-xl font-semibold mb-4 text-center">"{votableQuestions[currentQuestionIndex]}"</h2>
-                <p className="mb-4 text-gray-400 text-center">How would you assess this statement—valid, invalid, or would you prefer to abstain from making a judgment?</p>
-                <div className="flex space-x-2 mb-4 justify-center">
-                  <button className="px-4 py-2 bg-[#CA60ED] rounded-md hover:bg-purple-700 transition-colors">Invalid</button>
-                  <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors">Abstain</button>
-                  <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors">Valid</button>
-                </div>
-              </div>
             </div>
             <div className="w-1/2 flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar">
               <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
@@ -278,12 +291,12 @@ export default function Component() {
             </div>
           </div>
         </main>
-
+        {/* Related Media */}
         <aside className={`bg-[#131214] border border-[#2F3133] transition-all duration-300 ease-in-out shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] ${isRelatedMediaOpen ? 'w-80' : 'w-0'}`}>
           <div className="p-4 h-full overflow-y-auto custom-scrollbar">
             <h2 className="text-xl font-semibold mb-4">Related Media</h2>
             <div className="space-y-4">
-              {relatedMedia.map((item, index) => (
+              {relatedMedia.map((item,index) => (
                 <div key={index} className="bg-[#3a3a3a] p-4 rounded-md hover:bg-[#4a4a4a] transition-all duration-300 transform hover:scale-105 cursor-pointer">
                   <div className="flex items-center space-x-3">
                     <div className="w-16 h-16 bg-[#2F3133] rounded-md flex items-center justify-center">
@@ -307,16 +320,16 @@ export default function Component() {
           {isRelatedMediaOpen ? <ChevronRight className="w-6 h-6" /> : <Radio className="w-6 h-6" />}
         </button>
       </div>
-
+      {/* Footer with Turn Slider, Search and Transcript Tags */}
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
         <div className="flex justify-between items-center">
           <div className="flex flex-col items-start text-[13px] space-y-2">
             <p className='flex items-center'>
-              <TableOfContents className="w-4 h-4 me-1" /> {currentSegment}
+              <TableOfContents className="w-3 h-4 me-1" /> {currentSegment}
             </p>
-            <p>?: {speakerPurpose}</p>
+            <p>? {speakerPurpose}</p>
             <p className='flex items-center'>
-              <Target className="w-4 h-4 me-1" /> : {targetAudience}
+              <Target className="w-3 h-4 me-1" /> {targetAudience}
             </p>
           </div>
         </div>
@@ -372,6 +385,55 @@ export default function Component() {
         </button>
       </div>
 
+      {/* Floating Voting Module */}
+      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none">
+        <motion.div
+          drag
+          dragMomentum={false}
+          dragConstraints={constraintsRef}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          initial={position}
+          animate={position}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          className={`absolute ${
+            isMinimized ? 'w-12 h-12' : 'w-80 h-auto'
+          } bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden pointer-events-auto`}
+        >
+          <div className="p-2 bg-[#2F3133] flex justify-between items-center cursor-move">
+            <Move className="w-4 h-4 text-gray-400" />
+            <button
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+            </button>
+          </div>
+          {!isMinimized && (
+            <div className="p-4">
+              <h2 className="text-xl font-semibold mb-4 text-center text-white">
+                "{votableQuestions[currentQuestionIndex]}"
+              </h2>
+              <p className="mb-4 text-gray-400 text-center">
+                How would you assess this statement—valid, invalid, or would you prefer to abstain from making a judgment?
+              </p>
+              <div className="flex space-x-2 mb-4 justify-center">
+                <button className="px-4 py-2 bg-[#CA60ED] rounded-md hover:bg-purple-700 transition-colors text-white">
+                  Invalid
+                </button>
+                <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors text-white">
+                  Abstain
+                </button>
+                <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors text-white">
+                  Valid
+                </button>
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </div>
+
+      {/* Related Media */}
       <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
