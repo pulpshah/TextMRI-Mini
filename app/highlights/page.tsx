@@ -158,6 +158,7 @@ export default function DebateHighlights() {
       <h1 className="text-4xl font-bold mb-8 px-4">Debate Highlights</h1>
       <HighlightRow title="Segments" items={segments} />
       <HighlightRow title="Topics" items={topics} />
+      <HighlightRow title="Phases" items={topics} />
     </div>
   )
 }

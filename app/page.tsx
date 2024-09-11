@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones, Video, FileText as ArticleIcon, Search, Minimize2, Maximize2, Move } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones,Tv, Video, FileText as ArticleIcon, Search, Minimize2, Maximize2, Move, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
@@ -19,6 +20,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
+import { Button } from "@/components/ui/button"
 import JFile from "@/public/data/debate_analysis1.json"
 
 export default function Component() {
@@ -375,15 +377,27 @@ export default function Component() {
           <span className="text-lg">{getTotalTime()}</span>
         </div>
       </div>
+      <div className="fixed bottom-4 right-4 flex space-x-2 items-center">
+  <Link href="/highlights" passHref>
+    <Button
+      className="w-20 h-12 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors shadow-lg flex items-center justify-center"
+    >
+      <Tv className="w-8 h-6" /> {/* Ensured consistent size */}
+      <span className="sr-only">Transcript View</span>
+    </Button>
+  </Link>
+  {/* Keeping Search button unchanged */}
+  <Button
+    variant="default"
+    size="icon"
+    className="w-12 h-12 rounded-lg bg-[#CA60ED] hover:bg-[#d67ff3] transition-colors shadow-lg"
+    onClick={() => setIsSearchOpen(true)}
+  >
+    <Search className="w-6 h-6" />
+    <span className="sr-only">Search</span>
+  </Button>
+</div>
 
-      <div className="fixed bottom-4 right-4">
-        <button
-          onClick={() => setIsSearchOpen(true)}
-          className="w-12 h-12 bg-[#CA60ED] rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors shadow-lg"
-        >
-          <Search className="w-6 h-6" />
-        </button>
-      </div>
 
       {/* Floating Voting Module */}
       <div ref={constraintsRef} className="fixed inset-0 pointer-events-none">
