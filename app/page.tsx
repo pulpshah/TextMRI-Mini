@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 
 import { Button } from "@/components/ui/button"
-import JFile from "@/public/data/debate_analysis.json"
+import JFile from "@/public/data/Trump_Harris_Annotated_Transcript.json"
 
 import Header from '@/components/Header'
 import Transcript from '@/components/Transcript'
@@ -46,16 +46,16 @@ export default function App() {
   };
   
   // Load debate data from JSON file
-  const dataObj: DebateTurn[] = JFile.Data;
+  const dataObj = JFile.Data;
   
   // Function to get the number of turns for Kamala Harris
   const getKamalaTurn = () => {
-    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Kamala Harris").length;
+    return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === "Kamala Harris").length;
   };
 
   // Function to get the number of turns for Donald Trump
   const getTrumpTurn = () => {
-    return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Donald Trump").length;
+    return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === "Donald Trump").length;
   };
 
   // Function to format time in minutes:seconds
