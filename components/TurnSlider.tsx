@@ -90,7 +90,7 @@ export default function TurnSlider({
               <ChevronLeft className="w-5 h-5" />
             </button>
           </TooltipWrapper>
-          <TooltipWrapper id="current-turn" content="Click to edit current turn">
+          <TooltipWrapper id="current-turn" content="Click to editcurrent turn">
             <div 
               className="w-12 h-12 bg-[#CA60ED] rounded-xl flex items-center justify-center text-2xl font-bold cursor-pointer"
               onClick={handleEditStart}
