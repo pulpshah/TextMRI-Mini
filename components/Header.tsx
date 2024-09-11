@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+// Define the props type for the Header component
 type HeaderProps = {
   getTrumpTime: () => string;
   getTrumpTurn: () => number;
@@ -11,13 +12,17 @@ type HeaderProps = {
 
 export default function Header({ getTrumpTime, getTrumpTurn, getKamalaTime, getKamalaTurn, getTrumpScore, getKamalaScore }: HeaderProps) {
   return (
+    // Main header container with styling
     <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
       <div className="flex justify-between items-center">
+        {/* Trump's section */}
         <div className="flex items-center space-x-4">
+          {/* Trump's profile picture with border */}
           <div className="relative">
             <div className="absolute inset-0 rounded-full border-4 border-red-600"></div>
             <Image src="/profiles/trump.png" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
           </div>
+          {/* Trump's name and stats */}
           <div>
             <h3 className="font-semibold flex items-center">
               Donald J. Trump
@@ -30,21 +35,27 @@ export default function Header({ getTrumpTime, getTrumpTurn, getKamalaTime, getK
           </div>
         </div>
 
+        {/* Center section with logo and scores */}
         <div className="flex items-center">
           <div className="text-center">
+            {/* Empty div with gradient text (possibly for animation) */}
             <div className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text animate-pulse">
               
             </div>
+            {/* Logo */}
             <div className="text-xl w-16 mx-auto mt-2 mb-2">
               <img src="profiles/logo.svg" alt="" />
             </div>
+            {/* Scores with gradient text and animation */}
             <div className="text-4xl font-bold bg-gradient-to-r from-red-600 to-blue-600 text-transparent bg-clip-text animate-pulse">
               {getTrumpScore()} • {getKamalaScore()}
             </div>
           </div>
         </div>
 
+        {/* Kamala's section */}
         <div className="flex items-center space-x-4">
+          {/* Kamala's name and stats */}
           <div className="text-right">
             <h3 className="font-semibold flex items-center justify-end">
               <Image src="/profiles/democratIcon.svg" alt="Democratic Party" width={20} height={16} className="mr-2" />
@@ -55,6 +66,7 @@ export default function Header({ getTrumpTime, getTrumpTurn, getKamalaTime, getK
               <span>• Turns: {getKamalaTurn()}</span>
             </div>
           </div>
+          {/* Kamala's profile picture with border */}
           <div className="relative">
             <div className="absolute inset-0 rounded-full border-4 border-blue-600"></div>
             <Image src="/profiles/harris.png" alt="Kamala Harris" width={48} height={48} className="rounded-full" />

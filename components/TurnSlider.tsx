@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Timer } from 'lucide-react'
 
+// Define the props for the TurnSlider component
 type TurnSliderProps = {
   currentTurn: number;
   handleTurnChange: (turn: number) => void;
@@ -21,15 +22,18 @@ export default function TurnSlider({
   editValue,
   setEditValue
 }: TurnSliderProps) {
+  // Function to handle the start of editing
   const handleEditStart = () => {
     setIsEditing(true);
     setEditValue('');  // Clear the field when clicked
   };
 
+  // Function to handle changes in the edit input
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditValue(e.target.value)
   }
 
+  // Function to handle the completion of editing
   const handleEditComplete = () => {
     if (editValue === '') {
       // If they don't input anything, revert to the current turn value
@@ -44,6 +48,7 @@ export default function TurnSlider({
     }
   };
   
+  // Function to handle key presses in the edit input
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleEditComplete()
@@ -51,16 +56,21 @@ export default function TurnSlider({
   }
 
   return (
+    // Main container for the slider
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#131214] border border-[#2F3133] rounded-xl p-2 flex items-center space-x-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+      {/* Container for the turn navigation buttons and current turn display */}
       <div className="flex items-center space-x-2">
+        {/* Button to decrease the turn */}
         <button onClick={() => handleTurnChange(currentTurn - 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
           <ChevronLeft className="w-5 h-5" />
         </button>
+        {/* Current turn display/edit area */}
         <div 
           className="w-12 h-12 bg-[#CA60ED] rounded-xl flex items-center justify-center text-2xl font-bold cursor-pointer"
           onClick={handleEditStart}
         >
           {isEditing ? (
+            // Input field for editing the turn
             <input
               type="text"
               value={editValue}
@@ -71,13 +81,16 @@ export default function TurnSlider({
               autoFocus
             />
           ) : (
+            // Display current turn when not editing
             currentTurn
           )}
         </div>
+        {/* Button to increase the turn */}
         <button onClick={() => handleTurnChange(currentTurn + 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
           <ChevronRight className="w-5 h-5" />
         </button>
       </div>
+      {/* Range input for selecting turns */}
       <input
         type="range"
         min="1"
@@ -86,6 +99,7 @@ export default function TurnSlider({
         onChange={(e) => handleTurnChange(parseInt(e.target.value))}
         className="w-48 accent-[#CA60ED]"
       />
+      {/* Total time display */}
       <div className="flex items-center space-x-1">
         <Timer className="w-6 h-6" />
         <span className="text-lg">{getTotalTime()}</span>
