@@ -1,22 +1,35 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, BarChart2, FileText, User, X,Target, Timer, TableOfContents, Maximize2, Volume2, Radio, Headphones, Video, FileText as ArticleIcon } from 'lucide-react'
+import { ChevronRight, ChevronLeft, BarChart2, FileText, User, Target, Timer, TableOfContents, Radio, Headphones, Video, FileText as ArticleIcon, Search } from 'lucide-react'
 import Image from 'next/image'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command"
 import JFile from "@/public/data/debate_analysis1.json"
 
 export default function Component() {
   const [isRelatedMediaOpen, setIsRelatedMediaOpen] = useState(true)
   const [currentTurn, setCurrentTurn] = useState(1)
-  const [activePopup, setActivePopup] = useState<string | null>(null);
   const [currentSegment, setCurrentSegment] = useState('Introduction')
   const [speakerPurpose, setSpeakerPurpose] = useState('To inform')
   const [targetAudience, setTargetAudience] = useState('Voters, Candidates')
   const transcriptRef = useRef<HTMLDivElement | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState('1')
 
   type DebateTurn = {
     speaker: string;
@@ -28,13 +41,10 @@ export default function Component() {
   
   const dataObj: DebateTurn[] = JFile.Data;
   
-  
-  // Function to dynamically calculate Kamala's turn (using Biden for now) count based on the turnNumber
   const getKamalaTurn = () => {
     return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Kamala Harris").length;
   };
   
-  // Function to dynamically calculate Trump's turn count based on the turnNumber
   const getTrumpTurn = () => {
     return dataObj.slice(0, currentTurn + 1).filter(turn => turn.speaker === "Donald Trump").length;
   };
@@ -45,7 +55,6 @@ export default function Component() {
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
   
-  // Generic function to dynamically calculate total talk time for a given speaker up to the currentTurn
   const getSpeakerTime = (speaker: string) => {
     const seconds = dataObj
       .slice(0, currentTurn)
@@ -54,13 +63,9 @@ export default function Component() {
     return formatTime(seconds);
   };
   
-  // Usage for Kamala Harris
   const getKamalaTime = () => getSpeakerTime("Kamala Harris");
-  
-  // Usage for Donald Trump
   const getTrumpTime = () => getSpeakerTime("Donald Trump");
   
-  // Function to calculate total time regardless of the speaker
   const getTotalTime = () => {
     const seconds = dataObj
       .slice(0, currentTurn)
@@ -72,12 +77,9 @@ export default function Component() {
   const getSpeakerScore = (speaker: string) => {
     const turns = dataObj.slice(0, currentTurn + 1)
       .filter(turn => turn.speaker === speaker);
-      
-    // Return the score of the last turn if it exists
     return turns.length > 0 ? turns[turns.length - 1].score : 0;
   };
   
-  // Usage for Kamala Harris
   const getKamalaScore = () => getSpeakerScore("Kamala Harris");
   const getTrumpScore = () => getSpeakerScore("Donald Trump");
   
@@ -119,14 +121,34 @@ export default function Component() {
     setCurrentTurn(Math.max(1, Math.min(newTurn, transcriptData.length)))
   }
 
-  const handlePopupOpen = (popupId: string) => {
-    setActivePopup(popupId);
-    document.body.style.overflow = 'hidden';
+  const handleEditStart = () => {
+    setIsEditing(true);
+    setEditValue('');  // Clear the field when clicked
   };
 
-  const handlePopupClose = () => {
-    setActivePopup(null)
-    document.body.style.overflow = 'auto'
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditValue(e.target.value)
+  }
+
+  const handleEditComplete = () => {
+    if (editValue === '') {
+      // If they don't input anything, revert to the current turn value
+      setEditValue(currentTurn.toString());
+      setIsEditing(false);
+    } else {
+      const newTurn = parseInt(editValue, 10);
+      if (!isNaN(newTurn)) {
+        handleTurnChange(newTurn);
+      }
+      setIsEditing(false);
+    }
+  };
+  
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleEditComplete()
+    }
   }
 
   const relatedMedia = [
@@ -233,33 +255,25 @@ export default function Component() {
               </div>
             </div>
             <div className="w-1/2 flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar">
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('graph1')}
-              >
-                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
-                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
+              <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+                <h2 className="text-xl font-semibold mb-2">Graph 1</h2>
+                <div className="h-64 bg-[#3a3a3a] rounded-md flex items-center justify-center">
+                  <BarChart2 className="w-full h-full p-4" />
+                </div>
               </div>
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('annotation')}
-              >
+              <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
                 <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
-                <p className="text-gray-300">Explain Stuff</p>
+                <p className="text-gray-300">This section provides detailed explanations and context for the debate topics and statements made by the candidates.</p>
               </div>
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('graph2')}
-              >
-                <h2 className="text-xl font-semibold mb-2">Graph or chart</h2>
-                <div className="h-64 bg-[#3a3a3a] rounded-md"></div>
+              <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+                <h2 className="text-xl font-semibold mb-2">Graph 2</h2>
+                <div className="h-64 bg-[#3a3a3a] rounded-md flex items-center justify-center">
+                  <BarChart2 className="w-full h-full p-4" />
+                </div>
               </div>
-              <div 
-                className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] cursor-pointer transform transition-all duration-300"
-                onClick={() => handlePopupOpen('annotation')}
-              >
-                <h2 className="text-xl font-semibold mb-2">Textual Annotation</h2>
-                <p className="text-gray-300">Explain Stuff</p>
+              <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+                <h2 className="text-xl font-semibold mb-2">Additional Annotation</h2>
+                <p className="text-gray-300">This section provides further analysis and insights into the debate proceedings and candidate performances.</p>
               </div>
             </div>
           </div>
@@ -295,69 +309,89 @@ export default function Component() {
       </div>
 
       <footer className="bg-[#131214] border-t border-[#2F3133] p-4">
-  <div className="flex justify-between items-center">
-    <div className="flex flex-col items-start text-[13px] space-y-2">
-      <p className='flex items-center'>
-        <TableOfContents className="w-4 h-4 me-1" /> {currentSegment}
-      </p>
-      <p>?: {speakerPurpose}</p>
-      <p className='flex items-center'>
-        <Target className="w-4 h-4 me-1" /> : {targetAudience}
-      </p>
-    </div>
-  </div>
-</footer>
-
-<div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#131214] border border-[#2F3133] rounded-xl p-2 flex items-center space-x-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
-  <div className="flex items-center space-x-2">
-    <button onClick={() => handleTurnChange(currentTurn - 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
-      <ChevronLeft className="w-5 h-5" />
-    </button>
-    <div className="w-12 h-12 bg-[#CA60ED] rounded-xl flex items-center justify-center text-2xl font-bold">
-      {currentTurn}
-    </div>
-    <button onClick={() => handleTurnChange(currentTurn + 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
-      <ChevronRight className="w-5 h-5" />
-    </button>
-  </div>
-  <input
-    type="range"
-    min="1"
-    max={transcriptData.length}
-    value={currentTurn}
-    onChange={(e) => handleTurnChange(parseInt(e.target.value))}
-    className="w-48 accent-[#CA60ED]"
-  />
-  <div className="flex items-center space-x-1">
-    <Timer className="w-6 h-6" />
-    <span className="text-lg">{getTotalTime()}</span>
-  </div>
-</div>
-
-      {activePopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-[#131214] border border-[#2F3133] p-6 rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] w-3/4 h-3/4 overflow-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">
-                {activePopup === 'graph1' && 'Graph 1'}
-                {activePopup === 'graph2' && 'Graph 2'}
-                {activePopup === 'annotation' && 'Textual Annotation'}
-              </h2>
-              <button onClick={handlePopupClose} className="text-gray-500 hover:text-white transition-colors">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="h-full bg-[#3a3a3a] rounded-md p-4">
-              {activePopup === 'graph1' && <BarChart2 className="w-full h-full" />}
-              {activePopup === 'graph2' && <BarChart2 className="w-full h-full" />}
-              {activePopup === 'annotation' && (
-                <div className="h-full flex items-center justify-center">
-                  <p className="text-xl">Expanded view of the textual annotation</p>
-                </div>
-              )}
-            </div>
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col items-start text-[13px] space-y-2">
+            <p className='flex items-center'>
+              <TableOfContents className="w-4 h-4 me-1" /> {currentSegment}
+            </p>
+            <p>?: {speakerPurpose}</p>
+            <p className='flex items-center'>
+              <Target className="w-4 h-4 me-1" /> : {targetAudience}
+            </p>
           </div>
         </div>
+      </footer>
+
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#131214] border border-[#2F3133] rounded-xl p-2 flex items-center space-x-4 shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)]">
+        <div className="flex items-center space-x-2">
+          <button onClick={() => handleTurnChange(currentTurn - 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <div 
+            className="w-12 h-12 bg-[#CA60ED] rounded-xl flex items-center justify-center text-2xl font-bold cursor-pointer"
+            onClick={handleEditStart}
+          >
+            {isEditing ? (
+              <input
+                type="text"
+                value={editValue}
+                onChange={handleEditChange}
+                onBlur={handleEditComplete}
+                onKeyDown={handleKeyDown}
+                className="w-full h-full bg-transparent text-center text-2xl font-bold focus:outline-none"
+                autoFocus
+              />
+            ) : (
+              currentTurn
+            )}
+          </div>
+          <button onClick={() => handleTurnChange(currentTurn + 1)} className="w-8 h-8 bg-[#3a3a3a] rounded-full flex items-center justify-center hover:bg-[#4a4a4a] transition-all duration-300">
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+        <input
+          type="range"
+          min="1"
+          max={transcriptData.length}
+          value={currentTurn}
+          onChange={(e) => handleTurnChange(parseInt(e.target.value))}
+          className="w-48 accent-[#CA60ED]"
+        />
+        <div className="flex items-center space-x-1">
+          <Timer className="w-6 h-6" />
+          <span className="text-lg">{getTotalTime()}</span>
+        </div>
+      </div>
+
+      <div className="fixed bottom-4 right-4">
+        <button
+          onClick={() => setIsSearchOpen(true)}
+          className="w-12 h-12 bg-[#CA60ED] rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors shadow-lg"
+        >
+          <Search className="w-6 h-6" />
+        </button>
+      </div>
+
+      <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Suggestions">
+            <CommandItem>Search Transcript</CommandItem>
+            <CommandItem>Find Speaker</CommandItem>
+            <CommandItem>Jump to Turn</CommandItem>
+          </CommandGroup>
+          <CommandSeparator />
+          <CommandGroup heading="Settings">
+            <CommandItem>Change Theme</CommandItem>
+            <CommandItem>Adjust Volume</CommandItem>
+            <CommandItem>Toggle Related Media</CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+
+      {isSearchOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-40" onClick={() => setIsSearchOpen(false)}></div>
       )}
     </div>
   )
