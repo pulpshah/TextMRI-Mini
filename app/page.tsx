@@ -418,7 +418,7 @@ export default function Component() {
                 How would you assess this statement—valid, invalid, or would you prefer to abstain from making a judgment?
               </p>
               <div className="flex space-x-2 mb-4 justify-center">
-                <button className="px-4 py-2 bg-[#CA60ED] rounded-md hover:bg-purple-700 transition-colors text-white">
+                <button className="px-4 py-2 bg-[#CA60ED] rounded-md hover:bg-[#b74eda] transition-colors text-white">
                   Invalid
                 </button>
                 <button className="px-4 py-2 bg-[#3a3a3a] rounded-md hover:bg-[#4a4a4a] transition-colors text-white">
