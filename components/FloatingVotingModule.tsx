@@ -82,20 +82,19 @@ export default function FloatingVotingModule({ constraintsRef }: FloatingVotingM
 
   return (
     <TooltipProvider>
-      <motion.div
-        drag
-        dragMomentum={false}
-        dragConstraints={constraintsRef}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        initial={position}
-        animate={position}
-        variants={shapeVariants}
-        initial="minimized"
-        animate={isMinimized ? "minimized" : "expanded"}
-        style={{ originX: 0.5, originY: 0.5 }}
-        className="absolute bg-[#131214] border border-[#2F3133] shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden pointer-events-auto"
-      >
+    <motion.div
+      drag
+      dragMomentum={false}
+      dragConstraints={constraintsRef}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      variants={shapeVariants}
+      initial="minimized"
+      animate={isMinimized ? "minimized" : "expanded"}
+      style={{ originX: 0.5, originY: 0.5 }}
+      className="absolute bg-[#131214] border border-[#2F3133] shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden pointer-events-auto"
+    >
+
         <AnimatePresence mode="wait" initial={false}>
           {isMinimized ? (
             <Tooltip>
