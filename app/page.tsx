@@ -17,6 +17,7 @@ import Footer from '@/components/Footer'
 import TurnSlider from '@/components/TurnSlider'
 import FloatingVotingModule from '@/components/FloatingVotingModule'
 import SearchDialog from '@/components/SearchDialog'
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent  } from '@radix-ui/react-tooltip'
 
 export default function App() {
   // State variables for managing various aspects of the application
@@ -26,6 +27,7 @@ export default function App() {
   const [currentSegment, setCurrentSegment] = useState('')
   const [currentTopic, setCurrentTopic] = useState('')
   const [targetAudience, setTargetAudience] = useState('') // New state for targetAudience
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null); // New state for Tooltip
   const transcriptRef = useRef<HTMLDivElement | null>(null);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -46,11 +48,16 @@ export default function App() {
     Phase: string; // Added Phase for segment
     Topic: string; // Added Topic for current topic
     target_audience: string; // Added target_audience for the target audience
+    turn: number; // Added turn property
   };
   
   // Load debate data from JSON file
   const dataObj: DebateTurn[] = JFile.Data;
-  
+
+  // Functions to handle Tooltip mouse events
+  const handleMouseEnter = (tooltip: string) => setActiveTooltip(tooltip);
+  const handleMouseLeave = () => setActiveTooltip(null);
+
   // Function to get the number of turns for Kamala Harris
   const getKamalaTurn = () => {
     return dataObj.slice(0, currentTurn).filter(turn => turn.speaker === "Kamala Harris").length;
@@ -106,7 +113,7 @@ export default function App() {
     turn: index + 1,
     speaker: turn.speaker,
     content: turn.content,
-    turn_score: turn.turn_score // {{ edit_1 }} Added turn_score property
+    turn_score: turn.turn_score
   }));
 
   // Function to update current segment based on current turn
@@ -140,82 +147,111 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col h-screen text-white bg-[#131214] max-minimum:hidden">
-      {/* Header component with debate statistics */}
-      <Header 
-        getTrumpTime={getTrumpTime} 
-        getTrumpTurn={getTrumpTurn} 
-        getKamalaTime={getKamalaTime} 
-        getKamalaTurn={getKamalaTurn}
-        getTrumpScore={getTrumpScore}
-        getKamalaScore={getKamalaScore}
-      />
-      <div className="flex flex-1 overflow-hidden">
-        <main className="flex-1 p-4 overflow-hidden">
-          <div className="flex h-full space-x-4">
-            {/* Transcript component */}
-            <Transcript 
-              transcriptData={transcriptData} 
-              currentTurn={currentTurn} 
-              handleTurnChange={handleTurnChange} 
-            />
-            {/* Graphs and annotations component */}
-            <GraphsAndAnnotations />
-          </div>
-        </main>
-        {/* Related media component */}
-        <RelatedMedia isRelatedMediaOpen={isRelatedMediaOpen} currentTurn={currentTurn} />
-        {/* Toggle button for related media */}
-        <button
-          className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-l-md hover:bg-[#4a4a4a] transition-all duration-300"
-          onClick={() => setIsRelatedMediaOpen(!isRelatedMediaOpen)}
-        >
-          {isRelatedMediaOpen ? <ChevronRight className="w-6 h-6" /> : <Radio className="w-6 h-6" />}
-        </button>
+    <TooltipProvider>
+      <div className="flex flex-col h-screen text-white bg-[#131214] max-minimum:hidden">
+        {/* Header component with debate statistics */}
+        <Header 
+          getTrumpTime={getTrumpTime} 
+          getTrumpTurn={getTrumpTurn} 
+          getKamalaTime={getKamalaTime} 
+          getKamalaTurn={getKamalaTurn}
+          getTrumpScore={getTrumpScore}
+          getKamalaScore={getKamalaScore}
+        />
+        <div className="flex flex-1 overflow-hidden">
+          <main className="flex-1 p-4 overflow-hidden">
+            <div className="flex h-full space-x-4">
+              {/* Transcript component */}
+              <Transcript 
+                transcriptData={transcriptData} 
+                currentTurn={currentTurn} 
+                handleTurnChange={handleTurnChange} 
+              />
+              {/* Graphs and annotations component */}
+              <GraphsAndAnnotations />
+            </div>
+          </main>
+          {/* Related media component */}
+          <RelatedMedia isRelatedMediaOpen={isRelatedMediaOpen} currentTurn={currentTurn} />
+          {/* Tooltip for related media toggle button */}
+          <Tooltip open={activeTooltip === 'related-media'}>
+            <TooltipTrigger asChild>
+              <button
+                className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#3a3a3a] p-2 rounded-l-md hover:bg-[#4a4a4a] transition-all duration-300"
+                onClick={() => setIsRelatedMediaOpen(!isRelatedMediaOpen)}
+                onMouseEnter={() => handleMouseEnter('related-media')}
+                onMouseLeave={handleMouseLeave}
+              >
+                {isRelatedMediaOpen ? <ChevronRight className="w-6 h-6" /> : <Radio className="w-6 h-6" />}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="left" className="z-50 bg-[#2F3133] text-white p-2 rounded-md shadow-lg">
+              {isRelatedMediaOpen ? 'Hide Related Media' : 'Show Related Media'}
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        {/* Footer component */}
+        <Footer 
+          currentSegment={currentSegment} 
+          currentTopic={currentTopic} 
+          targetAudience={targetAudience} // Pass target audience to Footer
+        />
+        {/* Turn slider component */}
+        <TurnSlider 
+          currentTurn={currentTurn} 
+          handleTurnChange={handleTurnChange} 
+          transcriptData={transcriptData}
+          getTotalTime={getTotalTime}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          editValue={editValue}
+          setEditValue={setEditValue}
+        />
+        {/* Fixed buttons for transcript view and search with tooltips */}
+        <div className="fixed bottom-4 right-4 flex space-x-2 items-center">
+          <Tooltip open={activeTooltip === 'highlights'}>
+            <TooltipTrigger asChild>
+              <Link href="/highlights" passHref>
+                <Button
+                  className="w-20 h-12 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors shadow-lg flex items-center justify-center"
+                  onMouseEnter={() => handleMouseEnter('highlights')}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Tv className="w-8 h-6" />
+                  <span className="sr-only">Transcript View</span>
+                </Button>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="z-50 bg-[#2F3133] text-white p-2 rounded-md shadow-lg">
+              View Highlights
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip open={activeTooltip === 'search'}>
+            <TooltipTrigger asChild>
+              <Button
+                variant="default"
+                size="icon"
+                className="w-12 h-12 rounded-lg bg-[#CA60ED] hover:bg-[#d67ff3] transition-colors shadow-lg"
+                onClick={() => setIsSearchOpen(true)}
+                onMouseEnter={() => handleMouseEnter('search')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <Search className="w-6 h-6" />
+                <span className="sr-only">Search</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="z-50 bg-[#2F3133] text-white p-2 rounded-md shadow-lg">
+              Search
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        {/* Floating voting module */}
+        <div ref={constraintsRef} className="fixed flex justify-center items-center inset-0 pointer-events-none">
+          <FloatingVotingModule constraintsRef={constraintsRef} />
+        </div>
+        {/* Search dialog component */}
+        <SearchDialog isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
       </div>
-      {/* Footer component */}
-      <Footer 
-        currentSegment={currentSegment} 
-        currentTopic={currentTopic} 
-        targetAudience={targetAudience} // Pass target audience to Footer
-      />
-      {/* Turn slider component */}
-      <TurnSlider 
-        currentTurn={currentTurn} 
-        handleTurnChange={handleTurnChange} 
-        transcriptData={transcriptData}
-        getTotalTime={getTotalTime}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
-        editValue={editValue}
-        setEditValue={setEditValue}
-      />
-      {/* Fixed buttons for transcript view and search */}
-      <div className="fixed bottom-4 right-4 flex space-x-2 items-center">
-        <Link href="/highlights" passHref>
-          <Button
-            className="w-20 h-12 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] transition-colors shadow-lg flex items-center justify-center"
-          >
-            <Tv className="w-8 h-6" />
-            <span className="sr-only">Transcript View</span>
-          </Button>
-        </Link>
-        <Button
-          variant="default"
-          size="icon"
-          className="w-12 h-12 rounded-lg bg-[#CA60ED] hover:bg-[#d67ff3] transition-colors shadow-lg"
-          onClick={() => setIsSearchOpen(true)}
-        >
-          <Search className="w-6 h-6" />
-          <span className="sr-only">Search</span>
-        </Button>
-      </div>
-      {/* Floating voting module */}
-      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none">
-        <FloatingVotingModule constraintsRef={constraintsRef} />
-      </div>
-      {/* Search dialog component */}
-      <SearchDialog isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
-    </div>
+    </TooltipProvider>
   )
 }

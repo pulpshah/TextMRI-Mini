@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from 'react'
 import { FileText, MessageCircle, Video, Headphones } from 'lucide-react'
 import JFile from "@/public/data/Trump_Harris_Annotated_Transcript.json"

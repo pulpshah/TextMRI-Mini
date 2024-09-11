@@ -1,3 +1,5 @@
+"use client"
+
 import { User } from 'lucide-react'
 import { useRef, useEffect } from 'react'
 
