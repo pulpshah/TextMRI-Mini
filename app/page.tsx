@@ -162,7 +162,7 @@ export default function Component() {
   ];
 
   return (
-    <div className="flex flex-col h-screen text-white bg-[#131214]">
+    <div className="flex flex-col h-screen text-white bg-[#131214] max-minimum:hidden">
       <header className="p-4 bg-[#131214] border-b border-[#2F3133]">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
