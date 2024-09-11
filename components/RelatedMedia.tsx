@@ -76,9 +76,10 @@ export default function RelatedMedia({ isRelatedMediaOpen, currentTurn }: Relate
       })
     }
 
-    addMedia(turnData.facts_topic_ref, 'Fact')
-    addMedia(turnData.value_topic_ref, 'Value')
-    addMedia(turnData.policy_topic_ref, 'Policy')
+    addMedia(turnData.facts_topic_ref, 'Facts Topic Reference')
+    addMedia(turnData.value_topic_ref, 'Value Topic Reference')
+    addMedia(turnData.policy_topic_ref, 'Policy Topic Reference')
+    addMedia(turnData.YT_ref, "YouTube Reference")
 
     setRelatedMedia(media)
   }
