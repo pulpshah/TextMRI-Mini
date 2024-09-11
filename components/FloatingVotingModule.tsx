@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Move, Minimize2, Vote } from 'lucide-react'
+import { GripHorizontal, Minimize2, Vote } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 
@@ -11,8 +11,8 @@ type FloatingVotingModuleProps = {
 }
 
 export default function FloatingVotingModule({ constraintsRef }: FloatingVotingModuleProps) {
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [position, setPosition] = useState({ x: 20, y: 20 })
+  const [isMinimized, setIsMinimized] = useState(true)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [hasNewQuestion, setHasNewQuestion] = useState(false)
@@ -57,13 +57,26 @@ export default function FloatingVotingModule({ constraintsRef }: FloatingVotingM
       width: 64, 
       height: 64, 
       borderRadius: 32,
-      transition: { duration: 0.2 }
+      transition: { duration: 0.3, type: 'spring', stiffness: 500, damping: 30 }
     },
     expanded: { 
       width: 320, 
       height: 'auto', 
       borderRadius: 8,
+      transition: { duration: 0.3, type: 'spring', stiffness: 500, damping: 30 }
+    }
+  }
+
+  const contentVariants = {
+    minimized: {
+      opacity: 0,
+      scale: 0.8,
       transition: { duration: 0.2 }
+    },
+    expanded: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.2, delay: 0.1 }
     }
   }
 
@@ -80,7 +93,7 @@ export default function FloatingVotingModule({ constraintsRef }: FloatingVotingM
         variants={shapeVariants}
         initial="minimized"
         animate={isMinimized ? "minimized" : "expanded"}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        style={{ originX: 0.5, originY: 0.5 }}
         className="absolute bg-[#131214] border border-[#2F3133] shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden pointer-events-auto"
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -89,10 +102,10 @@ export default function FloatingVotingModule({ constraintsRef }: FloatingVotingM
               <TooltipTrigger asChild>
                 <motion.div
                   key="minimized"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.1 }}
+                  variants={contentVariants}
+                  initial="minimized"
+                  animate="expanded"
+                  exit="minimized"
                   className="w-full h-full flex items-center justify-center cursor-pointer"
                   onClick={handleClick}
                 >
@@ -116,16 +129,16 @@ export default function FloatingVotingModule({ constraintsRef }: FloatingVotingM
           ) : (
             <motion.div
               key="expanded"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              variants={contentVariants}
+              initial="minimized"
+              animate="expanded"
+              exit="minimized"
             >
-              <div className="p-2 bg-[#2F3133] flex justify-between items-center cursor-move">
-                <Move className="w-4 h-4 text-gray-400" />
+              <div className="p-1 bg-[#2F3133] flex justify-between items-center cursor-move">
+                <GripHorizontal className="w-4 h-4 text-gray-400 ml-2" />
                 <Button
                   variant="ghost"
-                  size="icon"
+                  size="sm"
                   onClick={() => setIsMinimized(true)}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
