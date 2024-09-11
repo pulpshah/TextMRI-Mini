@@ -7,7 +7,19 @@ import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import JFile from "@/public/data/debate_analysis2.json";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command"
+import { Button } from "@/components/ui/button"
+import JFile from "@/public/data/debate_analysis.json"
 
 type MediaItem = {
   type: string;
@@ -94,7 +106,7 @@ export default function Component() {
     speaker: string;
     startTime: number;
     endTime: number;
-    score: number;
+    cumulative_score: number;
     content: string;
   };
   
@@ -143,9 +155,7 @@ export default function Component() {
   const getSpeakerScore = (speaker: string) => {
     const turns = dataObj.slice(0, currentTurn + 1)
       .filter(turn => turn.speaker === speaker);
-      
-    // Return the score of the last turn if it exists
-    return turns.length > 0 ? turns[turns.length - 1].score : 0;
+    return turns.length > 0 ? turns[turns.length - 1].cumulative_score : 0;
   };
   
   // Usage for Kamala Harris
