@@ -39,7 +39,7 @@ export default function Header({ getTrumpTime, getTrumpTurn, getKamalaTime, getK
                   onMouseLeave={handleMouseLeave}
                 >
                   <div className="absolute inset-0 rounded-full border-4 border-red-600"></div>
-                  <Image src="/profiles/trump.png" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
+                  <Image src="/profiles/trump.jpg" alt="Donald J. Trump" width={48} height={48} className="rounded-full" />
                 </div>
               </TooltipTrigger>
               <TooltipContent side="bottom" align="start" className="z-50 bg-[#2F3133] text-white p-2 rounded-md shadow-lg">
