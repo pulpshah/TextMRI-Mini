@@ -59,7 +59,7 @@ export default function Transcript({ transcriptData, currentTurn, handleTurnChan
   };
 
   return (
-    <div className="w-1/2 flex flex-col space-y-4">
+    <div className="w-full lg:w-1/2 flex flex-col space-y-4">
       <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden">
         <h2 className="text-xl font-semibold mb-2">Transcript</h2>
         {/* Transcript container with custom scrollbar */}
