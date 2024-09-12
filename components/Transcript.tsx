@@ -2,6 +2,7 @@
 
 import { User } from 'lucide-react'
 import { useRef, useEffect } from 'react'
+import Image from 'next/image'
 
 // Define the props type for the Transcript component
 type TranscriptProps = {
@@ -41,6 +42,22 @@ export default function Transcript({ transcriptData, currentTurn, handleTurnChan
     }
   };
 
+  // Function to get the speaker's image URL
+  const getSpeakerImage = (speaker: string) => {
+    switch (speaker) {
+      case "Donald Trump":
+        return "/profiles/trump.png";
+      case "Kamala Harris":
+        return "/profiles/harris.png";
+      case "Linsey Davis":
+        return "/profiles/davis.jpg";
+      case "David Muir":
+        return "/profiles/muir.jpg";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className="w-1/2 flex flex-col space-y-4">
       <div className="flex-1 p-4 bg-[#131214] border border-[#2F3133] rounded-lg shadow-[0_0_22.8px_9px_rgba(0,0,0,0.37)] overflow-hidden">
@@ -61,8 +78,18 @@ export default function Transcript({ transcriptData, currentTurn, handleTurnChan
                 <div className="flex items-center justify-between mb-2">
                   {/* Speaker information */}
                   <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-[#4a4a4a] rounded-full flex items-center justify-center">
-                      <User className="w-5 h-5" />
+                    <div className="w-8 h-8 bg-[#4a4a4a] rounded-full flex items-center justify-center overflow-hidden">
+                      {getSpeakerImage(item.speaker) ? (
+                        <Image
+                          src={getSpeakerImage(item.speaker)}
+                          alt={item.speaker}
+                          width={32}
+                          height={32}
+                          className="object-cover"
+                        />
+                      ) : (
+                        <User className="w-5 h-5" />
+                      )}
                     </div>
                     <span className="font-semibold">{item.speaker}</span>
                   </div>
