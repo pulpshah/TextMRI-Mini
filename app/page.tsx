@@ -18,6 +18,7 @@ import TurnSlider from '@/components/TurnSlider'
 import FloatingVotingModule from '@/components/FloatingVotingModule'
 import SearchDialog from '@/components/SearchDialog'
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent  } from '@radix-ui/react-tooltip'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function App() {
   // State variables for managing various aspects of the application
@@ -33,6 +34,9 @@ export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState('1')
+
+  // New state for active tab
+  const [activeTab, setActiveTab] = useState("graphs")
 
   // Ref for constraining the floating voting module
   const constraintsRef = useRef(null)
@@ -160,15 +164,35 @@ export default function App() {
         />
         <div className="flex flex-1 overflow-hidden">
           <main className="flex-1 p-4 overflow-hidden">
-            <div className="flex h-full space-x-4">
-              {/* Transcript component */}
-              <Transcript 
-                transcriptData={transcriptData} 
-                currentTurn={currentTurn} 
-                handleTurnChange={handleTurnChange} 
-              />
-              {/* Graphs and annotations component */}
-              <GraphsAndAnnotations />
+            <div className="h-full space-y-4 lg:space-y-0 lg:space-x-4 lg:flex">
+              {/* Tabs for tablet and mobile */}
+              <div className="lg:hidden w-full">
+                <Tabs defaultValue="graphs" value={activeTab} onValueChange={setActiveTab}>
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="graphs">Graphs & Annotations</TabsTrigger>
+                    <TabsTrigger value="transcript">Transcript</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="graphs">
+                    <GraphsAndAnnotations />
+                  </TabsContent>
+                  <TabsContent value="transcript">
+                    <Transcript 
+                      transcriptData={transcriptData} 
+                      currentTurn={currentTurn} 
+                      handleTurnChange={handleTurnChange} 
+                    />
+                  </TabsContent>
+                </Tabs>
+              </div>
+              {/* Desktop layout */}
+              <div className="hidden lg:flex lg:space-x-4 w-full h-full">
+                <Transcript 
+                  transcriptData={transcriptData} 
+                  currentTurn={currentTurn} 
+                  handleTurnChange={handleTurnChange} 
+                />
+                <GraphsAndAnnotations />
+              </div>
             </div>
           </main>
           {/* Related media component */}
