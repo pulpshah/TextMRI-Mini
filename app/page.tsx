@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { ChevronLeft, ChevronRight, Home, AlignLeft, Tv2 } from 'lucide-react'
 import Spline from '@splinetool/react-spline/next'
 
+
+
 export default function CoverPage() {
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
