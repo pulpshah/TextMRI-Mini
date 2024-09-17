@@ -29,7 +29,7 @@ export default function CoverPage() {
               <Link href="/highlights" passHref>
                 <button className="text-gray-400 hover:text-white text-sm sm:text-base px-4 py-2 rounded-md transition-colors duration-200">Highlights</button>
               </Link>
-              <Link href="/" passHref>
+              <Link href="/scoringmethods" passHref>
                 <button className="text-gray-400 hover:text-white text-sm sm:text-base px-4 py-2 rounded-md transition-colors duration-200">Scoring Methods</button>
               </Link>                 
             </div>
